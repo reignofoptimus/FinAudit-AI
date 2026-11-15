@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Cpu,
-  RefreshCw,
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  Sparkles,
-  TrendingUp,
-  ShieldCheck,
-  ShieldAlert,
-  ArrowRight
-} from 'lucide-react';
-import {
   ResponsiveContainer,
   ScatterChart,
   Scatter,
@@ -20,7 +7,6 @@ import {
   YAxis,
   Tooltip,
   Cell,
-  ZAxis
 } from 'recharts';
 import { AnomalyItem } from '../types';
 import { api } from '../api/client';
@@ -51,7 +37,7 @@ export const AnomalyDetection: React.FC = () => {
       const data = await api.listAnomalies(params);
       setAnomalies(data);
     } catch (err: any) {
-      addToast('error', 'Failed to fetch anomalies', err.message);
+      addToast('error', 'Outlier index retrieval notice', err.message);
     } finally {
       setLoading(false);
     }
@@ -65,10 +51,10 @@ export const AnomalyDetection: React.FC = () => {
     setIsRunning(true);
     try {
       const res = await api.runAnomalies();
-      addToast('success', 'Isolation Forest Retrained', `Model evaluated transactions: detected ${res.anomalies_detected} behavioral outliers.`);
+      addToast('success', 'Outlier Scoring Complete', `Evaluated ledger transactions: detected ${res.anomalies_detected} behavioral outliers.`);
       fetchAnomalies();
     } catch (err: any) {
-      addToast('error', 'Model Run Failed', err.message);
+      addToast('error', 'Analysis Notice', err.message);
     } finally {
       setIsRunning(false);
     }
@@ -81,16 +67,16 @@ export const AnomalyDetection: React.FC = () => {
         auditor_disposition: disposition,
         auditor_comments: auditorComments || 'Auditor completed forensic anomaly review.',
       });
-      addToast('success', 'Disposition Recorded', `Anomaly #${selectedAnomaly.id} marked as ${disposition.replace('_', ' ')}.`);
+      addToast('success', 'Disposition Recorded', `Outlier #${selectedAnomaly.id} marked as ${disposition.replace('_', ' ')}.`);
       setSelectedAnomaly(null);
       setAuditorComments('');
       fetchAnomalies();
     } catch (err: any) {
-      addToast('error', 'Review Failed', err.message);
+      addToast('error', 'Review Notice', err.message);
     }
   };
 
-  // Prepare scatter chart data: X = Amount, Y = Anomaly Score
+  // Prepare scatter chart data: X = Amount, Y = Outlier Score
   const scatterData = anomalies.map((a) => ({
     id: a.id,
     amount: a.transaction?.amount || 0,
@@ -102,37 +88,39 @@ export const AnomalyDetection: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold mb-2">
-            <Cpu className="w-3.5 h-3.5" />
-            <span>Unsupervised Scikit-Learn Isolation Forest (n=100)</span>
-          </div>
-          <h2 className="text-base font-bold text-slate-900">Machine Learning Anomaly Detection</h2>
-          <p className="text-xs text-slate-500">
-            Multivariate statistical isolation on expenditure volume, vendor z-scores, velocity spikes, and off-cycle timing.
+          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+            Statistical Outlier & Distribution Analysis
+          </h2>
+          <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+            Multi-variable statistical deviation scoring on expenditure volume, vendor velocity, and off-cycle timing
           </p>
         </div>
 
         <button
           onClick={handleRunModel}
           disabled={isRunning}
-          className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-all shadow-xs flex items-center space-x-2 disabled:opacity-50"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin' : ''}`} />
-          <span>{isRunning ? 'Fitting Isolation Forest...' : 'Retrain & Score Outliers'}</span>
+          <span>{isRunning ? 'Scoring Deviations...' : 'Execute Outlier Analysis'}</span>
+          <span className="font-mono text-xs">⚡</span>
         </button>
       </div>
 
-      {/* Scatter Plot: Amount vs Anomaly Score */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs">
-        <div className="flex items-center justify-between mb-4">
+      {/* Scatter Plot: Amount vs Outlier Score */}
+      <div className="glass-card p-6 border border-white/10 shadow-xl">
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Anomaly Score vs Expenditure Magnitude</h3>
-            <p className="text-xs text-slate-500">Visual mapping of statistical outlier intensity across transaction values</p>
+            <h3 className="text-sm font-bold font-display text-[#F5F3EF]">
+              Deviation Score vs Expenditure Volume
+            </h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+              Visual mapping of statistical outlier intensity across transaction values
+            </p>
           </div>
-          <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-            Contamination Ratio: 8%
+          <span className="text-[11px] font-mono font-semibold text-[#FFC900] bg-[#FFC900]/15 border border-[#FFC900]/30 px-3 py-1 rounded-full">
+            Outlier Ratio: 8%
           </span>
         </div>
 
@@ -143,17 +131,19 @@ export const AnomalyDetection: React.FC = () => {
                 type="number"
                 dataKey="amount"
                 name="Amount"
-                unit="$"
-                stroke="#94a3b8"
-                fontSize={11}
-                tickFormatter={(v) => `$${v / 1000}k`}
+                unit="₹"
+                stroke="#F5F3EF"
+                opacity={0.4}
+                fontSize={10}
+                tickFormatter={(v) => `₹${v / 1000}k`}
               />
               <YAxis
                 type="number"
                 dataKey="score"
-                name="Anomaly Score"
-                stroke="#94a3b8"
-                fontSize={11}
+                name="Deviation Score"
+                stroke="#F5F3EF"
+                opacity={0.4}
+                fontSize={10}
                 domain={[50, 100]}
               />
               <Tooltip
@@ -162,22 +152,22 @@ export const AnomalyDetection: React.FC = () => {
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl border border-slate-800 text-xs space-y-1">
-                        <p className="font-bold">{data.vendor}</p>
-                        <p className="text-slate-300">Amount: ${data.amount.toLocaleString()}</p>
-                        <p className="text-purple-400 font-semibold">Anomaly Score: {data.score.toFixed(1)}/100</p>
-                        <p className="text-slate-400 capitalize">Risk: {data.risk}</p>
+                      <div className="glass-card p-3 shadow-2xl border border-white/20 text-xs space-y-1">
+                        <p className="font-bold text-[#F5F3EF] font-display">{data.vendor}</p>
+                        <p className="text-[#F5F3EF]/70 font-mono">Amount: ₹{data.amount.toLocaleString()}</p>
+                        <p className="text-[#FFC900] font-mono font-bold">Deviation Score: {data.score.toFixed(1)}/100</p>
+                        <p className="text-[#F5F3EF]/60 capitalize font-mono text-[10px]">Risk: {data.risk}</p>
                       </div>
                     );
                   }
                   return null;
                 }}
               />
-              <Scatter name="Anomalies" data={scatterData}>
+              <Scatter name="Outliers" data={scatterData}>
                 {scatterData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={entry.risk === 'high' ? '#ef4444' : entry.risk === 'medium' ? '#f59e0b' : '#3b82f6'}
+                    fill={entry.risk === 'high' ? '#FFC900' : entry.risk === 'medium' ? '#F5F3EF' : 'rgba(245, 243, 239, 0.4)'}
                   />
                 ))}
               </Scatter>
@@ -187,17 +177,17 @@ export const AnomalyDetection: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
+      <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 shadow-xl">
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold text-slate-500">Risk Severity:</span>
+          <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Risk Severity:</span>
           {['all', 'high', 'medium', 'low'].map((r) => (
             <button
               key={r}
               onClick={() => setRiskFilter(r)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
                 riskFilter === r
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
+                  : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
               }`}
             >
               {r}
@@ -206,15 +196,15 @@ export const AnomalyDetection: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold text-slate-500">Auditor Status:</span>
+          <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Auditor Status:</span>
           {['all', 'unreviewed', 'reviewed'].map((s) => (
             <button
               key={s}
               onClick={() => setReviewedFilter(s)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
                 reviewedFilter === s
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
+                  : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
               }`}
             >
               {s}
@@ -224,82 +214,88 @@ export const AnomalyDetection: React.FC = () => {
       </div>
 
       {/* Anomaly Outliers Table */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Statistical Outlier Investigation Queue</h3>
-            <p className="text-xs text-slate-500">Requires auditor review to confirm business rationale or investigate</p>
+            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">
+              Statistical Outlier Investigation Queue
+            </h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+              Requires auditor verification to confirm commercial rationale or investigate
+            </p>
           </div>
-          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full">
             {anomalies.length} Flagged
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
-              <tr>
-                <th className="py-3 px-4">Tx ID</th>
-                <th className="py-3 px-4">Vendor</th>
-                <th className="py-3 px-4">Amount</th>
-                <th className="py-3 px-4">Score</th>
-                <th className="py-3 px-4">Algorithmic Explainability Factors</th>
-                <th className="py-3 px-4">Risk</th>
-                <th className="py-3 px-4">Auditor Disposition</th>
-                <th className="py-3 px-4 text-right">Action</th>
+          <table className="w-full text-left text-xs border-collapse min-w-[750px]">
+            <thead>
+              <tr className="border-b border-white/10 text-[10px] font-mono font-bold uppercase tracking-wider text-[#F5F3EF]/50 bg-white/[0.02]">
+                <th className="py-3 px-5">Tx ID</th>
+                <th className="py-3 px-5">Vendor</th>
+                <th className="py-3 px-5">Amount</th>
+                <th className="py-3 px-5">Deviation Score</th>
+                <th className="py-3 px-5">Statistical Factors</th>
+                <th className="py-3 px-5">Risk</th>
+                <th className="py-3 px-5">Auditor Disposition</th>
+                <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5 font-sans">
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-slate-400">Loading ML anomaly results...</td>
+                  <td colSpan={8} className="py-12 text-center text-[#F5F3EF]/40 font-mono">
+                    Evaluating statistical distribution...
+                  </td>
                 </tr>
               ) : anomalies.length > 0 ? (
                 anomalies.map((a) => (
-                  <tr key={a.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-mono font-semibold text-slate-500">#{a.transaction_id}</td>
-                    <td className="py-3 px-4 font-bold text-slate-800">
+                  <tr key={a.id} className="hover:bg-white/[0.04] transition-colors">
+                    <td className="py-3.5 px-5 font-mono font-semibold text-[#F5F3EF]/60">#{a.transaction_id}</td>
+                    <td className="py-3.5 px-5 font-bold text-[#F5F3EF]">
                       {a.transaction?.vendor_name || 'Vendor N/A'}
                     </td>
-                    <td className="py-3 px-4 font-extrabold text-slate-900">
-                      ${a.transaction?.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    <td className="py-3.5 px-5 font-mono font-bold text-[#F5F3EF]">
+                      ₹{a.transaction?.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-1.5 font-bold text-purple-700">
+                    <td className="py-3.5 px-5">
+                      <div className="flex items-center gap-2 font-mono font-bold text-[#F5F3EF]">
                         <span>{a.anomaly_score.toFixed(1)}</span>
-                        <div className="w-10 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="w-12 h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-purple-500 rounded-full"
+                            className="h-full bg-[#FFC900] rounded-full"
                             style={{ width: `${a.anomaly_score}%` }}
                           />
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-slate-700 max-w-md">
+                    <td className="py-3.5 px-5 text-[#F5F3EF]/80 max-w-md">
                       <p className="line-clamp-2">{a.anomaly_factors}</p>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <StatusBadge status={a.risk_level} size="sm" />
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       {a.is_reviewed ? (
-                        <span className="capitalize px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                        <span className="capitalize px-2 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[#F5F3EF] text-[#08090B]">
                           {a.auditor_disposition?.replace('_', ' ') || 'Reviewed'}
                         </span>
                       ) : (
-                        <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        <span className="text-[11px] font-mono font-semibold text-[#FFC900] bg-[#FFC900]/15 px-2 py-0.5 rounded-full border border-[#FFC900]/30">
                           Pending Review
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-5 text-right">
                       <button
                         onClick={() => {
                           setSelectedAnomaly(a);
                           setDisposition((a.auditor_disposition as any) || 'legitimate');
                           setAuditorComments(a.auditor_comments || '');
                         }}
-                        className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs transition-colors"
+                        className="px-3 py-1.5 rounded-xl glass-pill text-xs font-semibold text-[#F5F3EF] hover:bg-[#FFC900] hover:text-[#08090B] transition-colors border border-white/10"
                       >
                         {a.is_reviewed ? 'Edit' : 'Review'}
                       </button>
@@ -308,8 +304,8 @@ export const AnomalyDetection: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="py-10 text-center text-slate-400">
-                    No anomalies found for the active criteria.
+                  <td colSpan={8} className="py-10 text-center text-[#F5F3EF]/40 font-mono">
+                    No outliers found for the active criteria.
                   </td>
                 </tr>
               )}
@@ -322,44 +318,44 @@ export const AnomalyDetection: React.FC = () => {
       <Modal
         isOpen={!!selectedAnomaly}
         onClose={() => setSelectedAnomaly(null)}
-        title={`Forensic Review: Anomaly #${selectedAnomaly?.id}`}
-        subtitle="Record your supervisory audit conclusion regarding this machine learning outlier"
+        title={`Audit Review: Outlier #${selectedAnomaly?.id}`}
+        subtitle="Record your supervisory conclusion regarding this transaction's statistical deviation"
         maxWidth="lg"
       >
         {selectedAnomaly && (
-          <div className="space-y-4 text-xs">
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+          <div className="space-y-4 text-xs font-sans">
+            <div className="p-4 rounded-2xl glass-soft border border-white/10 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-900">
-                  Transaction: ${selectedAnomaly.transaction?.amount.toFixed(2)} to {selectedAnomaly.transaction?.vendor_name}
+                <span className="font-bold text-[#F5F3EF] font-display text-sm">
+                  Transaction: ₹{selectedAnomaly.transaction?.amount.toFixed(2)} to {selectedAnomaly.transaction?.vendor_name}
                 </span>
-                <span className="font-bold text-purple-700">Score: {selectedAnomaly.anomaly_score.toFixed(1)}/100</span>
+                <span className="font-mono font-bold text-[#FFC900]">Deviation Score: {selectedAnomaly.anomaly_score.toFixed(1)}/100</span>
               </div>
-              <p className="text-slate-600"><strong>Why flagged:</strong> {selectedAnomaly.anomaly_factors}</p>
+              <p className="text-[#F5F3EF]/80 font-mono"><strong>Deviation reason:</strong> {selectedAnomaly.anomaly_factors}</p>
             </div>
 
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">Auditor Disposition Classification</label>
+              <label className="font-semibold text-[#F5F3EF] block mb-1">Auditor Disposition Classification</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'legitimate', label: 'Legitimate', desc: 'Valid approved business expense', icon: CheckCircle2, color: 'text-emerald-600' },
-                  { id: 'suspicious', label: 'Suspicious', desc: 'Escalated to internal audit', icon: AlertTriangle, color: 'text-amber-600' },
-                  { id: 'confirmed_fraud', label: 'Confirmed Fraud', desc: 'Critical compliance breach', icon: ShieldAlert, color: 'text-rose-600' },
+                  { id: 'legitimate', label: 'Legitimate', desc: 'Authorized commercial expense' },
+                  { id: 'suspicious', label: 'Flagged for Inquiry', desc: 'Escalated to internal control' },
+                  { id: 'confirmed_fraud', label: 'Confirmed Variance', desc: 'Critical compliance non-conformance' },
                 ].map((item) => {
-                  const Icon = item.icon;
                   const isSel = disposition === item.id;
                   return (
                     <button
                       key={item.id}
                       type="button"
                       onClick={() => setDisposition(item.id as any)}
-                      className={`p-3 rounded-xl border text-left font-semibold transition-colors ${
-                        isSel ? 'bg-purple-50 border-purple-300 text-purple-900' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                      className={`p-3 rounded-2xl border text-left font-semibold transition-all ${
+                        isSel
+                          ? 'bg-[#FFC900] border-[#FFC900] text-[#08090B] font-bold shadow-sm'
+                          : 'glass-pill text-[#F5F3EF] border-white/10 hover:border-white/30'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 mb-1 ${item.color}`} />
-                      <span>{item.label}</span>
-                      <p className="text-[10px] font-normal opacity-80 mt-0.5">{item.desc}</p>
+                      <span className="text-xs block font-bold">{item.label}</span>
+                      <p className="text-[10px] font-normal opacity-70 mt-0.5">{item.desc}</p>
                     </button>
                   );
                 })}
@@ -367,26 +363,26 @@ export const AnomalyDetection: React.FC = () => {
             </div>
 
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">Auditor Review Comments</label>
+              <label className="font-semibold text-[#F5F3EF] block mb-1">Auditor Review Comments</label>
               <textarea
                 rows={3}
                 value={auditorComments}
                 onChange={(e) => setAuditorComments(e.target.value)}
                 placeholder="Document your findings, verified contracts, or escalation details..."
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800"
+                className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] border border-white/10"
               />
             </div>
 
             <div className="flex justify-end space-x-2 pt-2">
               <button
                 onClick={() => setSelectedAnomaly(null)}
-                className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-600 font-semibold"
+                className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] border border-white/10"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmReview}
-                className="px-4 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold"
+                className="px-5 py-2 rounded-2xl bg-[#FFC900] text-[#08090B] font-bold text-xs hover:bg-[#FFD733] transition-colors"
               >
                 Save Disposition
               </button>

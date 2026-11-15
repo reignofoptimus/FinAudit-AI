@@ -205,6 +205,17 @@ export interface AuditReportItem {
   created_at: string;
 }
 
+export interface HighRiskItem {
+  id: number;
+  type: string;
+  title: string;
+  amount: number;
+  vendor: string;
+  risk_level: string;
+  explanation: string;
+  date: string;
+}
+
 export interface DashboardStats {
   total_transactions: number;
   total_documents: number;
@@ -231,16 +242,7 @@ export interface DashboardStats {
     expense: number;
     net: number;
   }[];
-  high_risk_findings: {
-    id: number;
-    type: string;
-    title: string;
-    amount: number;
-    vendor: string;
-    risk_level: string;
-    explanation: string;
-    date: string;
-  }[];
+  high_risk_findings: HighRiskItem[];
   recent_activities: {
     id: number;
     action: string;

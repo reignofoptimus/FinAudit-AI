@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { CheckCircle2, AlertTriangle, XCircle, Info, X } from 'lucide-react';
 
 export type ToastType = 'success' | 'warning' | 'error' | 'info';
 
@@ -36,36 +35,26 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
       {/* Toast Render Container */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full">
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full font-sans">
         {toasts.map((toast) => {
-          const bgColors = {
-            success: 'bg-emerald-50 border-emerald-200 text-emerald-900',
-            warning: 'bg-amber-50 border-amber-200 text-amber-900',
-            error: 'bg-rose-50 border-rose-200 text-rose-900',
-            info: 'bg-blue-50 border-blue-200 text-blue-900',
-          };
-          const icons = {
-            success: <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />,
-            warning: <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />,
-            error: <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />,
-            info: <Info className="w-5 h-5 text-blue-600 flex-shrink-0" />,
-          };
-
           return (
             <div
               key={toast.id}
-              className={`pointer-events-auto flex items-start space-x-3 p-3.5 rounded-xl border shadow-lg transition-all animate-in slide-in-from-bottom-3 ${bgColors[toast.type]}`}
+              className="pointer-events-auto flex items-start space-x-3 p-4 rounded-2xl glass-card shadow-2xl transition-all animate-in slide-in-from-bottom-3 border border-white/15"
             >
-              {icons[toast.type]}
+              {/* Golden Yellow Accent Dot */}
+              <div className="w-6 h-6 rounded-full bg-[#FFC900] text-[#08090B] flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 shadow-md shadow-[#FFC900]/25">
+                {toast.type === 'error' ? '!' : '✓'}
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold">{toast.title}</p>
-                {toast.message && <p className="text-xs opacity-90 mt-0.5">{toast.message}</p>}
+                <p className="text-xs font-bold font-display text-[#F5F3EF] tracking-tight">{toast.title}</p>
+                {toast.message && <p className="text-xs text-[#F5F3EF]/70 mt-0.5 font-sans leading-relaxed">{toast.message}</p>}
               </div>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-slate-400 hover:text-slate-600 transition-colors p-0.5"
+                className="w-5 h-5 rounded-full flex items-center justify-center text-[#F5F3EF]/40 hover:text-[#F5F3EF] hover:bg-white/10 transition-colors"
               >
-                <X className="w-3.5 h-3.5" />
+                ✕
               </button>
             </div>
           );

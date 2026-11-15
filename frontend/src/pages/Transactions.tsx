@@ -1,19 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Search,
-  Filter,
-  ArrowUpDown,
-  FileText,
-  AlertTriangle,
-  Copy,
-  Cpu,
-  FileQuestion,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  CheckCircle2,
-  Download
-} from 'lucide-react';
 import { TransactionItem } from '../types';
 import { api } from '../api/client';
 import { StatusBadge } from '../components/StatusBadge';
@@ -53,7 +38,7 @@ export const Transactions: React.FC = () => {
       const data = await api.listTransactions(params);
       setTransactions(data);
     } catch (err: any) {
-      addToast('error', 'Failed to fetch transactions', err.message);
+      addToast('error', 'Ledger retrieval notice', err.message);
     } finally {
       setLoading(false);
     }
@@ -65,12 +50,17 @@ export const Transactions: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Controls: Search, Filters, Risk Toggle */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+      {/* Top Filter Glass Card */}
+      <div className="glass-card p-5 border border-white/10 shadow-xl">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F5F3EF]/40">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
             <input
               type="text"
               placeholder="Search vendor, invoice #, transaction ID..."
@@ -79,11 +69,11 @@ export const Transactions: React.FC = () => {
                 setSearch(e.target.value);
                 setPage(0);
               }}
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 focus:outline-hidden focus:border-blue-500 transition-colors"
+              className="w-full h-11 pl-10 pr-4 rounded-2xl glass-input text-xs text-[#F5F3EF] placeholder-[#F5F3EF]/40 font-sans border border-white/10"
             />
           </div>
 
-          {/* Filter Dropdowns */}
+          {/* Filter Dropdowns strictly styled in 3-colour palette */}
           <div className="flex flex-wrap items-center gap-2.5">
             <select
               value={sourceType}
@@ -91,12 +81,13 @@ export const Transactions: React.FC = () => {
                 setSourceType(e.target.value);
                 setPage(0);
               }}
-              className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
+              style={{ colorScheme: 'dark' }}
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
             >
-              <option value="all">All Sources</option>
-              <option value="invoice">Invoices</option>
-              <option value="bank_statement">Bank Statements</option>
-              <option value="ledger">General Ledger</option>
+              <option value="all" className="bg-[#08090B] text-[#F5F3EF]">All Sources</option>
+              <option value="invoice" className="bg-[#08090B] text-[#F5F3EF]">Invoices</option>
+              <option value="bank_statement" className="bg-[#08090B] text-[#F5F3EF]">Bank Statements</option>
+              <option value="ledger" className="bg-[#08090B] text-[#F5F3EF]">General Ledger</option>
             </select>
 
             <select
@@ -105,23 +96,25 @@ export const Transactions: React.FC = () => {
                 setMatchStatus(e.target.value);
                 setPage(0);
               }}
-              className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
+              style={{ colorScheme: 'dark' }}
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
             >
-              <option value="all">All Match States</option>
-              <option value="matched">Fully Matched</option>
-              <option value="unmatched">Unmatched</option>
-              <option value="discrepancy">Discrepancy</option>
+              <option value="all" className="bg-[#08090B] text-[#F5F3EF]">All Match States</option>
+              <option value="matched" className="bg-[#08090B] text-[#F5F3EF]">Fully Matched</option>
+              <option value="unmatched" className="bg-[#08090B] text-[#F5F3EF]">Unmatched</option>
+              <option value="discrepancy" className="bg-[#08090B] text-[#F5F3EF]">Discrepancy</option>
             </select>
 
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
+              style={{ colorScheme: 'dark' }}
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
             >
-              <option value="date_desc">Newest First</option>
-              <option value="date_asc">Oldest First</option>
-              <option value="amount_desc">Highest Amount</option>
-              <option value="amount_asc">Lowest Amount</option>
+              <option value="date_desc" className="bg-[#08090B] text-[#F5F3EF]">Newest First</option>
+              <option value="date_asc" className="bg-[#08090B] text-[#F5F3EF]">Oldest First</option>
+              <option value="amount_desc" className="bg-[#08090B] text-[#F5F3EF]">Highest Amount</option>
+              <option value="amount_asc" className="bg-[#08090B] text-[#F5F3EF]">Lowest Amount</option>
             </select>
 
             {/* Risk Only Toggle Button */}
@@ -130,111 +123,113 @@ export const Transactions: React.FC = () => {
                 setRiskOnly(!riskOnly);
                 setPage(0);
               }}
-              className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1.5 ${
+              className={`h-11 px-4 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2 border ${
                 riskOnly
-                  ? 'bg-rose-50 text-rose-700 border-rose-300 shadow-xs'
-                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-md shadow-[#FFC900]/20'
+                  : 'glass-pill text-[#F5F3EF] border-white/10 hover:border-white/30'
               }`}
             >
-              <AlertTriangle className={`w-3.5 h-3.5 ${riskOnly ? 'text-rose-600' : 'text-slate-400'}`} />
-              <span>Audit Risks Only</span>
+              <span className={`w-2 h-2 rounded-full ${riskOnly ? 'bg-[#08090B]' : 'bg-[#FFC900]'}`} />
+              <span>Flagged Risks Only</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Transactions Data Table */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Consolidated Financial Transactions</h3>
-            <p className="text-xs text-slate-500">Cross-verified multi-source journal records</p>
+            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">Consolidated Financial Transactions</h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Cross-verified multi-source ledger journals</p>
           </div>
-          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-            Showing Page {page + 1}
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] px-3 py-1 rounded-full bg-white/10 border border-white/10">
+            Page {page + 1}
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
-              <tr>
-                <th className="py-3 px-4">Tx ID</th>
-                <th className="py-3 px-4">Date</th>
-                <th className="py-3 px-4">Vendor / Payee</th>
-                <th className="py-3 px-4">Invoice / Ref</th>
-                <th className="py-3 px-4">Source</th>
-                <th className="py-3 px-4">Amount</th>
-                <th className="py-3 px-4">Match Status</th>
-                <th className="py-3 px-4">Audit Risk Flags</th>
-                <th className="py-3 px-4 text-right">Details</th>
+          <table className="w-full text-left text-xs border-collapse min-w-[700px]">
+            <thead>
+              <tr className="border-b border-white/10 text-[10px] font-mono font-bold uppercase tracking-wider text-[#F5F3EF]/50 bg-white/[0.02]">
+                <th className="py-3 px-5">Tx ID</th>
+                <th className="py-3 px-5">Date</th>
+                <th className="py-3 px-5">Vendor / Payee</th>
+                <th className="py-3 px-5">Invoice / Ref</th>
+                <th className="py-3 px-5">Source</th>
+                <th className="py-3 px-5">Amount</th>
+                <th className="py-3 px-5">Match Status</th>
+                <th className="py-3 px-5">Audit Flags</th>
+                <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5 font-sans">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-slate-400">Loading ledger records...</td>
+                  <td colSpan={9} className="py-12 text-center text-[#F5F3EF]/40 font-mono">
+                    Loading ledger records...
+                  </td>
                 </tr>
               ) : transactions.length > 0 ? (
                 transactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-mono text-[11px] font-semibold text-slate-500">#{tx.id}</td>
-                    <td className="py-3 px-4 text-slate-600 font-medium">
+                  <tr key={tx.id} className="hover:bg-white/[0.04] transition-colors">
+                    <td className="py-3.5 px-5 font-mono text-[11px] font-semibold text-[#F5F3EF]/60">#{tx.id}</td>
+                    <td className="py-3.5 px-5 text-[#F5F3EF]/80 font-mono text-[11px]">
                       {new Date(tx.transaction_date).toLocaleDateString()}
                     </td>
-                    <td className="py-3 px-4 font-bold text-slate-800">
+                    <td className="py-3.5 px-5 font-bold text-[#F5F3EF]">
                       {tx.vendor_name || 'General Financial Account'}
                     </td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-slate-600">
+                    <td className="py-3.5 px-5 font-mono text-[11px] text-[#F5F3EF]/70">
                       {tx.invoice_number || tx.reference_no || '—'}
                     </td>
-                    <td className="py-3 px-4 capitalize">
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 text-slate-700">
+                    <td className="py-3.5 px-5 capitalize">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-white/10 text-[#F5F3EF]">
                         {tx.source_type.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-extrabold text-slate-900">
-                      ${tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    <td className="py-3.5 px-5 font-mono font-bold text-[#F5F3EF]">
+                      ₹{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <StatusBadge status={tx.match_status} size="sm" />
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {tx.is_duplicate && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800" title="Flagged duplicate payment">
-                            <Copy className="w-3 h-3" /> Duplicate
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#FFC900] text-[#08090B]">
+                            Duplicate
                           </span>
                         )}
                         {tx.is_anomaly && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800" title="Isolation Forest ML anomaly">
-                            <Cpu className="w-3 h-3" /> Outlier
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#FFC900]/20 text-[#FFC900] border border-[#FFC900]/40">
+                            Outlier
                           </span>
                         )}
                         {tx.has_missing_doc && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800" title="Missing primary supporting document">
-                            <FileQuestion className="w-3 h-3" /> Missing Doc
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-white/15 text-[#F5F3EF] border border-white/20">
+                            Missing Doc
                           </span>
                         )}
                         {!tx.is_duplicate && !tx.is_anomaly && !tx.has_missing_doc && tx.match_status !== 'discrepancy' && (
-                          <span className="text-[11px] text-slate-400 font-medium">No flags</span>
+                          <span className="text-[11px] font-mono text-[#F5F3EF]/40">—</span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-5 text-right">
                       <button
                         onClick={() => setSelectedTx(tx)}
-                        className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors"
+                        className="px-2.5 py-1 rounded-xl glass-pill text-xs font-semibold text-[#F5F3EF] hover:bg-[#FFC900] hover:text-[#08090B] transition-colors border border-white/10"
                       >
-                        <Eye className="w-3.5 h-3.5" />
+                        Inspect
                       </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="py-10 text-center text-slate-400">
-                    No transactions match the selected criteria.
+                  <td colSpan={9} className="py-12 text-center text-[#F5F3EF]/40 font-mono">
+                    No transactions match current filters.
                   </td>
                 </tr>
               )}
@@ -242,93 +237,89 @@ export const Transactions: React.FC = () => {
           </table>
         </div>
 
-        {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-100 flex items-center justify-between">
-          <p className="text-xs text-slate-500">
-            Showing transactions {page * limit + 1} - {page * limit + transactions.length}
-          </p>
-          <div className="flex items-center space-x-2">
-            <button
-              disabled={page === 0}
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              disabled={transactions.length < limit}
-              onClick={() => setPage((p) => p + 1)}
-              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 disabled:opacity-40 transition-colors"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+        {/* Pagination Bar */}
+        <div className="p-4 border-t border-white/10 flex items-center justify-between text-xs font-sans">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10"
+          >
+            ← Previous
+          </button>
+          <span className="font-mono text-xs text-[#F5F3EF]/70">
+            Page {page + 1}
+          </span>
+          <button
+            disabled={transactions.length < limit}
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10"
+          >
+            Next →
+          </button>
         </div>
       </div>
 
-      {/* Transaction Details Modal */}
-      <Modal
-        isOpen={!!selectedTx}
-        onClose={() => setSelectedTx(null)}
-        title={`Transaction Details: #${selectedTx?.id}`}
-        subtitle="Complete ledger metadata, audit classifications, and evidence links"
-        maxWidth="lg"
-      >
-        {selectedTx && (
-          <div className="space-y-4 text-xs">
-            <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Vendor / Counterparty</span>
-                <p className="text-sm font-bold text-slate-900 mt-0.5">{selectedTx.vendor_name || 'N/A'}</p>
+      {/* Transaction Detail Modal */}
+      {selectedTx && (
+        <Modal
+          isOpen={!!selectedTx}
+          onClose={() => setSelectedTx(null)}
+          title={`Ledger Transaction #${selectedTx.id}`}
+          subtitle={`Verified Source: ${selectedTx.source_type.replace('_', ' ').toUpperCase()}`}
+          maxWidth="2xl"
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="p-3 rounded-2xl glass-soft border border-white/10">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#F5F3EF]/50 block">Amount</span>
+                <span className="text-lg font-bold font-mono text-[#F5F3EF]">
+                  ₹{selectedTx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </span>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Total Amount</span>
-                <p className="text-sm font-bold text-slate-900 mt-0.5">${selectedTx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} {selectedTx.currency}</p>
+              <div className="p-3 rounded-2xl glass-soft border border-white/10">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#F5F3EF]/50 block">Transaction Date</span>
+                <span className="text-sm font-bold font-mono text-[#F5F3EF]">
+                  {new Date(selectedTx.transaction_date).toLocaleDateString()}
+                </span>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Posting Date</span>
-                <p className="font-semibold text-slate-800 mt-0.5">{new Date(selectedTx.transaction_date).toLocaleDateString()}</p>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Source Type</span>
-                <p className="font-semibold text-slate-800 capitalize mt-0.5">{selectedTx.source_type.replace('_', ' ')}</p>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Invoice / Ref</span>
-                <p className="font-mono text-slate-800 mt-0.5">{selectedTx.invoice_number || selectedTx.reference_no || 'None'}</p>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400">Account Code</span>
-                <p className="font-mono text-slate-800 mt-0.5">{selectedTx.account_code || '6000'}</p>
+              <div className="p-3 rounded-2xl glass-soft border border-white/10">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#F5F3EF]/50 block">Match Status</span>
+                <div className="mt-1">
+                  <StatusBadge status={selectedTx.match_status} size="sm" />
+                </div>
               </div>
             </div>
 
-            <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Description / Memo</span>
-              <p className="p-3 bg-white rounded-xl border border-slate-200 text-slate-700">{selectedTx.description || 'No description recorded.'}</p>
-            </div>
-
-            <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-200/80">
-              <span className="text-xs font-bold text-amber-900 block mb-1">Audit Verification Status</span>
-              <div className="flex items-center gap-2">
-                <StatusBadge status={selectedTx.match_status} size="sm" />
-                {selectedTx.is_duplicate && <span className="text-[11px] font-bold text-amber-700">• Potential Duplicate</span>}
-                {selectedTx.is_anomaly && <span className="text-[11px] font-bold text-purple-700">• Statistical Outlier</span>}
-                {selectedTx.has_missing_doc && <span className="text-[11px] font-bold text-rose-700">• Unattached Voucher</span>}
+            <div className="p-4 rounded-2xl glass-soft border border-white/10 space-y-2 text-xs">
+              <div className="flex justify-between py-1 border-b border-white/5">
+                <span className="text-[#F5F3EF]/60">Vendor / Payee</span>
+                <span className="font-bold text-[#F5F3EF]">{selectedTx.vendor_name || '—'}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-white/5">
+                <span className="text-[#F5F3EF]/60">Invoice Number</span>
+                <span className="font-mono font-bold text-[#F5F3EF]">{selectedTx.invoice_number || '—'}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-white/5">
+                <span className="text-[#F5F3EF]/60">Account Code</span>
+                <span className="font-mono text-[#F5F3EF]">{selectedTx.account_code || '—'}</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="text-[#F5F3EF]/60">Description / Memo</span>
+                <span className="font-medium text-[#F5F3EF] text-right max-w-xs">{selectedTx.description || 'Verified journal record'}</span>
               </div>
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div className="flex justify-end pt-3">
               <button
                 onClick={() => setSelectedTx(null)}
-                className="px-4 py-2 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-slate-800"
+                className="px-5 py-2 rounded-2xl bg-[#FFC900] text-[#08090B] font-bold text-xs hover:bg-[#FFD733] transition-colors"
               >
-                Done
+                Close Workpaper
               </button>
             </div>
           </div>
-        )}
-      </Modal>
+        </Modal>
+      )}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect } from 'react';
-import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -41,30 +40,30 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-in fade-in"
+        className="fixed inset-0 bg-[#08090B]/70 backdrop-blur-md transition-opacity animate-in fade-in"
         onClick={onClose}
       />
 
-      {/* Modal Dialog */}
+      {/* Glassmorphic Modal Dialog */}
       <div
-        className={`relative bg-white rounded-2xl shadow-2xl border border-slate-200/90 w-full ${widthClasses[maxWidth]} overflow-hidden z-10 animate-in zoom-in-95 duration-150`}
+        className={`relative glass-card shadow-2xl w-full ${widthClasses[maxWidth]} overflow-hidden z-10 animate-in zoom-in-95 duration-150 border border-white/15`}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-start justify-between p-6 border-b border-white/10">
           <div>
-            <h3 className="text-base font-bold text-slate-900">{title}</h3>
-            {subtitle && <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>}
+            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">{title}</h3>
+            {subtitle && <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">{subtitle}</p>}
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#F5F3EF]/70 hover:text-[#08090B] hover:bg-[#FFC900] transition-colors"
           >
-            <X className="w-4 h-4" />
+            ✕
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-5 max-h-[75vh] overflow-y-auto">{children}</div>
+        <div className="p-6 max-h-[75vh] overflow-y-auto text-[#F5F3EF] font-sans">{children}</div>
       </div>
     </div>
   );

@@ -1,14 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Copy,
-  RefreshCw,
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  ShieldAlert,
-  ArrowRight
-} from 'lucide-react';
 import { DuplicateGroupItem } from '../types';
 import { api } from '../api/client';
 import { StatusBadge } from '../components/StatusBadge';
@@ -33,7 +23,7 @@ export const DuplicateDetection: React.FC = () => {
       const data = await api.listDuplicates(statusFilter !== 'all' ? statusFilter : undefined);
       setDuplicateGroups(data);
     } catch (err: any) {
-      addToast('error', 'Failed to fetch duplicate records', err.message);
+      addToast('error', 'Duplicate index retrieval notice', err.message);
     } finally {
       setLoading(false);
     }
@@ -50,7 +40,7 @@ export const DuplicateDetection: React.FC = () => {
       addToast('success', 'Duplicate Scan Complete', `Identified ${res.duplicate_groups_detected} duplicate transaction group(s).`);
       fetchDuplicates();
     } catch (err: any) {
-      addToast('error', 'Detection Failed', err.message);
+      addToast('error', 'Detection Notice', err.message);
     } finally {
       setIsRunning(false);
     }
@@ -63,51 +53,49 @@ export const DuplicateDetection: React.FC = () => {
         action: resolveAction,
         resolution_notes: resolutionNotes || 'Auditor reviewed and verified duplicate voucher status.',
       });
-      addToast('success', 'Group Updated', `Duplicate group ${selectedGroup.group_id} marked as ${resolveAction === 'dismiss' ? 'false positive' : 'resolved'}.`);
+      addToast('success', 'Group Disposition Recorded', `Duplicate group ${selectedGroup.group_id} marked as ${resolveAction === 'dismiss' ? 'false positive' : 'resolved'}.`);
       setSelectedGroup(null);
       setResolutionNotes('');
       fetchDuplicates();
     } catch (err: any) {
-      addToast('error', 'Action Failed', err.message);
+      addToast('error', 'Action Notice', err.message);
     }
   };
 
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold mb-2">
-            <Copy className="w-3.5 h-3.5" />
-            <span>Multi-Factor Pattern Matching</span>
-          </div>
-          <h2 className="text-base font-bold text-slate-900">Duplicate Invoices & Double-Payment Defense</h2>
-          <p className="text-xs text-slate-500">
-            Identifies twin billings, duplicated wire transfers, and fuzzy vendor name variations before settlement clearance.
+          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+            Duplicate Invoice & Double-Payment Defense
+          </h2>
+          <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+            Identifies twin billings, duplicated disbursements, and vendor variations before ledger closure
           </p>
         </div>
 
         <button
           onClick={handleRunDetection}
           disabled={isRunning}
-          className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs transition-all shadow-xs flex items-center space-x-2 disabled:opacity-50"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin' : ''}`} />
           <span>{isRunning ? 'Scanning Ledger...' : 'Run Duplicate Scan'}</span>
+          <span className="font-mono text-xs">⚡</span>
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center space-x-2 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs">
-        <span className="text-xs font-semibold text-slate-500">Filter Status:</span>
+      <div className="glass-card p-4 flex items-center space-x-2 border border-white/10 shadow-xl">
+        <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Status:</span>
         {['all', 'flagged', 'resolved', 'false_positive'].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors ${
+            className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
               statusFilter === st
-                ? 'bg-slate-900 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
+                : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
             }`}
           >
             {st.replace(/_/g, ' ')}
@@ -118,20 +106,20 @@ export const DuplicateDetection: React.FC = () => {
       {/* Duplicate Groups List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="py-16 text-center text-xs text-slate-400 bg-white rounded-3xl border border-slate-200/90">
-            Loading duplicate analysis...
+          <div className="py-16 text-center text-xs font-mono text-[#F5F3EF]/40 glass-card border border-white/10">
+            Scanning duplicate clusters...
           </div>
         ) : duplicateGroups.length > 0 ? (
           duplicateGroups.map((group) => (
             <div
               key={group.group_id}
-              className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-xs transition-all space-y-4"
+              className="glass-card p-6 space-y-4 hover:border-[#FFC900]/40 transition-all border border-white/10 shadow-xl"
             >
               {/* Group Header */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold font-mono text-slate-900">{group.group_id}</span>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xs font-bold font-mono text-[#F5F3EF]">{group.group_id}</span>
+                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#FFC900]/20 text-[#FFC900] border border-[#FFC900]/40">
                     {group.duplicate_type.replace(/_/g, ' ')}
                   </span>
                   <StatusBadge status={group.status} size="sm" />
@@ -139,8 +127,8 @@ export const DuplicateDetection: React.FC = () => {
 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Similarity</span>
-                    <span className="text-xs font-bold text-amber-600">{(group.confidence_score * 100).toFixed(0)}% Match</span>
+                    <span className="text-[10px] uppercase font-mono font-bold text-[#F5F3EF]/50 block">Pattern Match</span>
+                    <span className="text-xs font-mono font-bold text-[#FFC900]">{(group.confidence_score * 100).toFixed(0)}%</span>
                   </div>
 
                   {group.status === 'flagged' && (
@@ -149,7 +137,7 @@ export const DuplicateDetection: React.FC = () => {
                         setSelectedGroup(group);
                         setResolveAction('resolve');
                       }}
-                      className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
+                      className="px-3.5 py-1.5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-colors shadow-sm shadow-[#FFC900]/20"
                     >
                       Audit Disposition
                     </button>
@@ -158,8 +146,8 @@ export const DuplicateDetection: React.FC = () => {
               </div>
 
               {/* Reason Explanation */}
-              <div className="p-3 bg-amber-50/70 border border-amber-200/80 rounded-xl text-xs text-amber-900 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <div className="p-3 bg-[#FFC900]/15 border border-[#FFC900]/30 rounded-2xl text-xs text-[#FFC900] flex items-center gap-2 font-mono">
+                <span className="font-bold">Flag:</span>
                 <span>{group.flag_reason}</span>
               </div>
 
@@ -170,28 +158,28 @@ export const DuplicateDetection: React.FC = () => {
                   return (
                     <div
                       key={rec.id}
-                      className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 relative"
+                      className="p-4 rounded-2xl glass-soft border border-white/10 space-y-2 relative"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#08090B] bg-[#F5F3EF] px-2 py-0.5 rounded-md font-bold">
                           Voucher #{idx + 1} (Tx #{tx?.id})
                         </span>
-                        <span className="text-[11px] text-slate-500">
+                        <span className="text-[11px] font-mono text-[#F5F3EF]/60">
                           {tx?.transaction_date ? new Date(tx.transaction_date).toLocaleDateString() : 'N/A'}
                         </span>
                       </div>
 
                       <div className="pt-1">
-                        <p className="text-sm font-bold text-slate-900">{tx?.vendor_name || 'Vendor N/A'}</p>
-                        <p className="text-xs text-slate-500 font-mono mt-0.5">
+                        <p className="text-sm font-bold text-[#F5F3EF] font-display">{tx?.vendor_name || 'Vendor N/A'}</p>
+                        <p className="text-xs text-[#F5F3EF]/60 font-mono mt-0.5">
                           Invoice: {tx?.invoice_number || 'None'} | Ref: {tx?.reference_no || 'None'}
                         </p>
                       </div>
 
-                      <div className="flex items-baseline justify-between pt-2 border-t border-slate-200">
-                        <span className="text-xs font-semibold text-slate-500">Disbursement:</span>
-                        <span className="text-sm font-extrabold text-slate-900">
-                          ${tx?.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      <div className="flex items-baseline justify-between pt-2 border-t border-white/10">
+                        <span className="text-xs font-semibold text-[#F5F3EF]/60">Disbursement:</span>
+                        <span className="text-base font-bold font-mono text-[#F5F3EF]">
+                          ₹{tx?.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </span>
                       </div>
                     </div>
@@ -201,83 +189,79 @@ export const DuplicateDetection: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="py-16 text-center text-xs text-slate-400 bg-white rounded-3xl border border-slate-200/90">
-            No duplicate transactions detected. Click "Run Duplicate Scan" to evaluate ledger records.
+          <div className="py-16 text-center text-xs font-mono text-[#F5F3EF]/40 glass-card border border-white/10">
+            No duplicate payment risks identified under current filters.
           </div>
         )}
       </div>
 
-      {/* Resolve Duplicate Modal */}
+      {/* Resolution Modal */}
       <Modal
         isOpen={!!selectedGroup}
         onClose={() => setSelectedGroup(null)}
-        title={`Audit Disposition: Duplicate Group ${selectedGroup?.group_id}`}
-        subtitle="Review twin records and specify resolution or false positive classification"
-        maxWidth="lg"
+        title={`Audit Disposition: Duplicate Cluster ${selectedGroup?.group_id}`}
+        subtitle="Review twin records and document supervisory approval"
+        maxWidth="md"
       >
-        {selectedGroup && (
-          <div className="space-y-4 text-xs">
-            <p className="text-slate-600">
-              Select how to resolve this flagged duplicate pattern:
-            </p>
+        <div className="space-y-4 text-xs font-sans">
+          <p className="text-[#F5F3EF]/80 font-mono">
+            {selectedGroup?.flag_reason}
+          </p>
 
+          <div>
+            <label className="font-semibold text-[#F5F3EF] block mb-1">Audit Disposition</label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setResolveAction('resolve')}
-                className={`p-3 rounded-xl border text-left font-semibold transition-colors ${
+                className={`py-2 px-3 rounded-2xl text-xs font-semibold transition-all border ${
                   resolveAction === 'resolve'
-                    ? 'bg-amber-50 border-amber-300 text-amber-900'
-                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900]'
+                    : 'glass-pill text-[#F5F3EF] border-white/10'
                 }`}
               >
-                <CheckCircle2 className="w-4 h-4 text-amber-600 mb-1" />
-                <span>Confirmed Duplicate / Refund Requested</span>
-                <p className="text-[10px] font-normal opacity-80 mt-0.5">Voucher flagged for payment cancellation or vendor credit memo</p>
+                Confirm Duplicate & Void
               </button>
-
               <button
                 type="button"
                 onClick={() => setResolveAction('dismiss')}
-                className={`p-3 rounded-xl border text-left font-semibold transition-colors ${
+                className={`py-2 px-3 rounded-2xl text-xs font-semibold transition-all border ${
                   resolveAction === 'dismiss'
-                    ? 'bg-blue-50 border-blue-300 text-blue-700'
-                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900]'
+                    : 'glass-pill text-[#F5F3EF] border-white/10'
                 }`}
               >
-                <XCircle className="w-4 h-4 text-blue-600 mb-1" />
-                <span>Legitimate Recurring / False Positive</span>
-                <p className="text-[10px] font-normal opacity-80 mt-0.5">Separate legitimate charges with coincidentally identical amounts</p>
-              </button>
-            </div>
-
-            <div>
-              <label className="font-semibold text-slate-700 block mb-1">Auditor Working Notes</label>
-              <textarea
-                rows={3}
-                value={resolutionNotes}
-                onChange={(e) => setResolutionNotes(e.target.value)}
-                placeholder="Reference vendor communication, PO numbers, or verification with procurement..."
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800"
-              />
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-2">
-              <button
-                onClick={() => setSelectedGroup(null)}
-                className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-600 font-semibold"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmResolve}
-                className="px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold"
-              >
-                Save Disposition
+                Authorized Recurring
               </button>
             </div>
           </div>
-        )}
+
+          <div>
+            <label className="font-semibold text-[#F5F3EF] block mb-1">Auditor Workpaper Notes</label>
+            <textarea
+              rows={3}
+              value={resolutionNotes}
+              onChange={(e) => setResolutionNotes(e.target.value)}
+              placeholder="e.g., Confirmed with AP department that invoice was submitted twice; second payment voided."
+              className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] border border-white/10"
+            />
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-2">
+            <button
+              onClick={() => setSelectedGroup(null)}
+              className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] border border-white/10"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmResolve}
+              className="px-5 py-2 rounded-2xl bg-[#FFC900] text-[#08090B] font-bold text-xs hover:bg-[#FFD733] transition-colors"
+            >
+              Submit Disposition
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

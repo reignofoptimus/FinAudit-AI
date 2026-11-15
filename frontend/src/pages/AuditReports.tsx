@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  FileBarChart2,
-  Download,
-  Plus,
-  Clock,
-  CheckCircle2,
-  AlertTriangle,
-  FileText,
-  Sparkles,
-  Printer,
-  ChevronRight,
-  ShieldCheck
-} from 'lucide-react';
 import { AuditReportItem } from '../types';
 import { api } from '../api/client';
-import { StatusBadge } from '../components/StatusBadge';
 import { Modal } from '../components/Modal';
 import { useToast } from '../context/ToastContext';
 
@@ -39,7 +25,7 @@ export const AuditReports: React.FC = () => {
       const data = await api.listReports();
       setReports(data);
     } catch (err: any) {
-      addToast('error', 'Failed to load reports', err.message);
+      addToast('error', 'Report registry retrieval notice', err.message);
     } finally {
       setLoading(false);
     }
@@ -63,7 +49,7 @@ export const AuditReports: React.FC = () => {
       setShowGenerateModal(false);
       fetchReports();
     } catch (err: any) {
-      addToast('error', 'Generation Failed', err.message);
+      addToast('error', 'Compilation Notice', err.message);
     } finally {
       setIsGenerating(false);
     }
@@ -72,92 +58,96 @@ export const AuditReports: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Action Banner */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Formal ReportLab PDF Synthesis & LLM Executive Summary</span>
-          </div>
-          <h2 className="text-base font-bold text-slate-900">Audit Report Generation Studio</h2>
-          <p className="text-xs text-slate-500">
-            Synthesize multi-ledger findings into formal, regulatory-ready audit draft reports with attestation sign-off blocks.
+          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+            Audit Report Studio & Compliance Workpapers
+          </h2>
+          <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+            Synthesize multi-ledger findings into formal, regulatory-ready audit draft reports with attestation sign-off blocks
           </p>
         </div>
 
         <button
           onClick={() => setShowGenerateModal(true)}
-          className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-all shadow-xs flex items-center space-x-2"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 shrink-0"
         >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Build New Audit Report</span>
+          <span>Compile New Audit Report</span>
+          <span className="font-mono text-xs">+</span>
         </button>
       </div>
 
       {/* Reports Archive */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Compiled Audit Report Archive</h3>
-            <p className="text-xs text-slate-500">Published audit drafts and historical PDF certifications</p>
+            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">
+              Compiled Audit Report Archive
+            </h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+              Published audit drafts and historical PDF certifications
+            </p>
           </div>
-          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-            {reports.length} Reports
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full">
+            {reports.length} Reports Compiled
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
-              <tr>
-                <th className="py-3 px-4">Report Title</th>
-                <th className="py-3 px-4">Period</th>
-                <th className="py-3 px-4">Transactions</th>
-                <th className="py-3 px-4">Discrepancies</th>
-                <th className="py-3 px-4">Duplicates</th>
-                <th className="py-3 px-4">Anomalies</th>
-                <th className="py-3 px-4">Auditor / Author</th>
-                <th className="py-3 px-4">Generated Date</th>
-                <th className="py-3 px-4 text-right">PDF Download</th>
+          <table className="w-full text-left text-xs border-collapse min-w-[750px]">
+            <thead>
+              <tr className="border-b border-white/10 text-[10px] font-mono font-bold uppercase tracking-wider text-[#F5F3EF]/50 bg-white/[0.02]">
+                <th className="py-3 px-5">Report Title</th>
+                <th className="py-3 px-5">Period</th>
+                <th className="py-3 px-5">Transactions</th>
+                <th className="py-3 px-5">Variances</th>
+                <th className="py-3 px-5">Duplicates</th>
+                <th className="py-3 px-5">Outliers</th>
+                <th className="py-3 px-5">Auditor / Author</th>
+                <th className="py-3 px-5">Generated Date</th>
+                <th className="py-3 px-5 text-right">PDF Download</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/5 font-sans">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-slate-400">Loading audit report registry...</td>
+                  <td colSpan={9} className="py-12 text-center text-[#F5F3EF]/40 font-mono">
+                    Loading report archive...
+                  </td>
                 </tr>
               ) : reports.length > 0 ? (
                 reports.map((rep) => (
-                  <tr key={rep.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-bold text-slate-900 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                      <span className="truncate max-w-xs">{rep.title}</span>
+                  <tr key={rep.id} className="hover:bg-white/[0.04] transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-[#F5F3EF] flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#FFC900]" />
+                      <span className="truncate max-w-xs font-display">{rep.title}</span>
                     </td>
-                    <td className="py-3 px-4 text-slate-600 font-semibold">{rep.audit_period}</td>
-                    <td className="py-3 px-4 text-slate-700">{rep.total_transactions}</td>
-                    <td className="py-3 px-4 font-bold text-rose-600">{rep.discrepancies_count}</td>
-                    <td className="py-3 px-4 font-bold text-amber-600">{rep.duplicates_count}</td>
-                    <td className="py-3 px-4 font-bold text-purple-600">{rep.anomalies_count}</td>
-                    <td className="py-3 px-4 text-slate-600">{rep.generated_by}</td>
-                    <td className="py-3 px-4 text-slate-500">
+                    <td className="py-3.5 px-5 text-[#F5F3EF]/80 font-mono text-[11px] font-semibold">{rep.audit_period}</td>
+                    <td className="py-3.5 px-5 text-[#F5F3EF] font-mono font-bold">{rep.total_transactions}</td>
+                    <td className="py-3.5 px-5 font-mono font-bold text-[#F5F3EF]">{rep.discrepancies_count}</td>
+                    <td className="py-3.5 px-5 font-mono font-bold text-[#F5F3EF]">{rep.duplicates_count}</td>
+                    <td className="py-3.5 px-5 font-mono font-bold text-[#F5F3EF]">{rep.anomalies_count}</td>
+                    <td className="py-3.5 px-5 text-[#F5F3EF]/70">{rep.generated_by}</td>
+                    <td className="py-3.5 px-5 text-[#F5F3EF]/60 font-mono text-[11px]">
                       {new Date(rep.created_at).toLocaleDateString()}
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-5 text-right">
                       <a
                         href={api.getReportDownloadUrl(rep.id)}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-2xs transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-colors shadow-sm shadow-[#FFC900]/20"
                       >
-                        <Download className="w-3.5 h-3.5" />
                         <span>Download PDF</span>
+                        <span className="font-mono text-xs">↓</span>
                       </a>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="py-10 text-center text-slate-400">
-                    No reports generated yet. Click "Build New Audit Report" to synthesize your findings into a PDF draft.
+                  <td colSpan={9} className="py-10 text-center text-[#F5F3EF]/40 font-mono">
+                    No reports generated yet. Click "Compile New Audit Report" to synthesize your findings into a PDF draft.
                   </td>
                 </tr>
               )}
@@ -171,77 +161,77 @@ export const AuditReports: React.FC = () => {
         isOpen={showGenerateModal}
         onClose={() => setShowGenerateModal(false)}
         title="Synthesize Comprehensive Audit Report"
-        subtitle="Compile evidence, ML anomaly results, and findings into a downloadable PDF"
+        subtitle="Compile evidence, outlier analyses, and findings into a downloadable formal PDF"
         maxWidth="xl"
       >
-        <form onSubmit={handleGenerateReport} className="space-y-4 text-xs">
+        <form onSubmit={handleGenerateReport} className="space-y-4 text-xs font-sans">
           <div>
-            <label className="font-semibold text-slate-700 block mb-1">Report Title</label>
+            <label className="font-semibold text-[#F5F3EF] block mb-1">Report Title</label>
             <input
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-semibold"
+              className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] font-semibold border border-white/10"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">Audit Period</label>
+              <label className="font-semibold text-[#F5F3EF] block mb-1">Audit Period</label>
               <input
                 type="text"
                 required
                 value={auditPeriod}
                 onChange={(e) => setAuditPeriod(e.target.value)}
                 placeholder="e.g., FY2024 (Full Year)"
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800"
+                className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] border border-white/10"
               />
             </div>
 
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">Risk Severity Filter</label>
+              <label className="font-semibold text-[#F5F3EF] block mb-1">Risk Severity Filter</label>
               <select
                 value={riskFilter}
                 onChange={(e) => setRiskFilter(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-semibold"
+                style={{ colorScheme: 'dark' }}
+                className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] font-semibold bg-[#08090B] border border-white/10"
               >
-                <option value="all">Include All Risk Levels</option>
-                <option value="high">High Risk Critical Only</option>
-                <option value="medium">Medium & High Risk</option>
+                <option value="all" className="bg-[#08090B] text-[#F5F3EF]">Include All Risk Levels</option>
+                <option value="high" className="bg-[#08090B] text-[#F5F3EF]">High Risk Critical Only</option>
+                <option value="medium" className="bg-[#08090B] text-[#F5F3EF]">Medium & High Risk</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="font-semibold text-slate-700 block mb-1">Auditor Attestation Commentary</label>
+            <label className="font-semibold text-[#F5F3EF] block mb-1">Auditor Attestation Commentary</label>
             <textarea
               rows={4}
               value={auditorComments}
               onChange={(e) => setAuditorComments(e.target.value)}
               placeholder="State any specific findings, remedial recommendations, or scope exceptions..."
-              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800"
+              className="w-full glass-input rounded-xl p-3 text-xs text-[#F5F3EF] border border-white/10"
             />
           </div>
 
-          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px]">
-            <strong>Notice:</strong> The generated report will contain formal ReportLab formatted tables, executive summary metrics, and the mandatory AI-assisted disclaimer requiring certified human auditor attestation.
+          <div className="p-3 bg-[#FFC900]/15 rounded-2xl border border-[#FFC900]/30 text-[#FFC900] text-[11px] font-mono">
+            <strong>Compliance Notice:</strong> The generated report will contain formal structured tables, executive summary metrics, and the certification block requiring human auditor signature attestation.
           </div>
 
           <div className="flex justify-end space-x-2 pt-2">
             <button
               type="button"
               onClick={() => setShowGenerateModal(false)}
-              className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-600 font-semibold"
+              className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] border border-white/10"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isGenerating}
-              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold flex items-center gap-1.5 disabled:opacity-50"
+              className="px-5 py-2 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold flex items-center gap-1.5 disabled:opacity-50 transition-colors shadow-sm shadow-[#FFC900]/20"
             >
-              <Download className="w-3.5 h-3.5" />
               <span>{isGenerating ? 'Compiling PDF Report...' : 'Compile & Generate PDF'}</span>
             </button>
           </div>

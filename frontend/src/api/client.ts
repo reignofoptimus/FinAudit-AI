@@ -1,4 +1,4 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
 
 function getHeaders(isFormData = false): HeadersInit {
   const token = localStorage.getItem('finaudit_token');
@@ -14,13 +14,21 @@ function getHeaders(isFormData = false): HeadersInit {
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const isFormData = options.body instanceof FormData;
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...getHeaders(isFormData),
-      ...options.headers,
-    },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        ...getHeaders(isFormData),
+        ...options.headers,
+      },
+    });
+  } catch (err: any) {
+    if (err?.message === 'Failed to fetch' || err?.name === 'TypeError') {
+      throw new Error(`Cannot connect to backend server at ${API_BASE_URL}. Please ensure the backend server is running.`);
+    }
+    throw err;
+  }
 
   if (res.status === 401) {
     localStorage.removeItem('finaudit_token');

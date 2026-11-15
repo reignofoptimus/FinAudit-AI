@@ -1,14 +1,4 @@
 import React, { useState } from 'react';
-import {
-  Settings as SettingsIcon,
-  Sliders,
-  ShieldCheck,
-  Building,
-  Key,
-  Save,
-  CheckCircle2,
-  RefreshCw
-} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
@@ -20,75 +10,72 @@ export const Settings: React.FC = () => {
   const [mediumRiskThreshold, setMediumRiskThreshold] = useState('5000');
   const [contaminationRatio, setContaminationRatio] = useState('0.08');
   const [fuzzyThreshold, setFuzzyThreshold] = useState('0.82');
-  const [geminiApiKey, setGeminiApiKey] = useState('');
-  const [openaiApiKey, setOpenaiApiKey] = useState('');
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    addToast('success', 'Settings Saved', 'Audit risk thresholds and model configuration updated.');
+    addToast('success', 'Controls Updated', 'Institutional audit materiality thresholds and reconciliation tolerances saved.');
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-4xl pb-8">
       {/* Banner */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs">
-        <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-          <SettingsIcon className="w-4 h-4 text-slate-600" />
-          <span>Audit Controls & Algorithmic Parameters</span>
+      <div className="glass-card p-6 border border-white/10 shadow-xl">
+        <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          Audit Controls & Materiality Parameters
         </h2>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Fine-tune materiality thresholds, Isolation Forest contamination factors, and AI explanation providers.
+        <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
+          Configure financial materiality thresholds, outlier sensitivity coefficients, and reconciliation matching tolerances
         </p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Risk Thresholds */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-            <Sliders className="w-4 h-4 text-blue-600" />
-            <h3 className="text-sm font-bold text-slate-900">Financial Materiality Thresholds</h3>
+        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+          <div className="border-b border-white/10 pb-3">
+            <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Financial Materiality Limits</h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Defines variance levels for mandatory forensic workpaper escalation</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">
-                High-Risk Materiality Amount ($)
+              <label className="font-semibold text-[#F5F3EF] block mb-1">
+                High-Risk Materiality Amount (₹)
               </label>
               <input
                 type="number"
                 value={highRiskThreshold}
                 onChange={(e) => setHighRiskThreshold(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-mono"
+                className="w-full h-11 glass-input rounded-2xl px-3.5 text-xs text-[#F5F3EF] font-mono border border-white/10"
               />
-              <p className="text-[11px] text-slate-400 mt-1">Discrepancies above this amount receive mandatory high-risk classification.</p>
+              <p className="text-[11px] text-[#F5F3EF]/50 font-mono mt-1">Discrepancies exceeding this value require supervisory partner sign-off.</p>
             </div>
 
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">
-                Medium-Risk Materiality Amount ($)
+              <label className="font-semibold text-[#F5F3EF] block mb-1">
+                Medium-Risk Materiality Amount (₹)
               </label>
               <input
                 type="number"
                 value={mediumRiskThreshold}
                 onChange={(e) => setMediumRiskThreshold(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-mono"
+                className="w-full h-11 glass-input rounded-2xl px-3.5 text-xs text-[#F5F3EF] font-mono border border-white/10"
               />
-              <p className="text-[11px] text-slate-400 mt-1">Baseline threshold for voucher variance investigations.</p>
+              <p className="text-[11px] text-[#F5F3EF]/50 font-mono mt-1">Baseline threshold for vendor voucher variance inquiries.</p>
             </div>
           </div>
         </div>
 
-        {/* Machine Learning Model Settings */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-            <ShieldCheck className="w-4 h-4 text-purple-600" />
-            <h3 className="text-sm font-bold text-slate-900">Machine Learning & Anomaly Tuning</h3>
+        {/* Statistical Scoring Settings */}
+        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+          <div className="border-b border-white/10 pb-3">
+            <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Statistical Outlier & Matching Tolerances</h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Algorithmic parameter tuning for distribution surveillance and fuzzy deduplication</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">
-                Isolation Forest Contamination Ratio
+              <label className="font-semibold text-[#F5F3EF] block mb-1">
+                Outlier Sensitivity Coefficient
               </label>
               <input
                 type="number"
@@ -97,13 +84,13 @@ export const Settings: React.FC = () => {
                 max="0.25"
                 value={contaminationRatio}
                 onChange={(e) => setContaminationRatio(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-mono"
+                className="w-full h-11 glass-input rounded-2xl px-3.5 text-xs text-[#F5F3EF] font-mono border border-white/10"
               />
-              <p className="text-[11px] text-slate-400 mt-1">Expected proportion of outliers in transaction distribution (default 0.08 = 8%).</p>
+              <p className="text-[11px] text-[#F5F3EF]/50 font-mono mt-1">Expected proportion of statistical outliers in transaction distribution (default 0.08 = 8%).</p>
             </div>
 
             <div>
-              <label className="font-semibold text-slate-700 block mb-1">
+              <label className="font-semibold text-[#F5F3EF] block mb-1">
                 Fuzzy Match Similarity Threshold
               </label>
               <input
@@ -113,32 +100,32 @@ export const Settings: React.FC = () => {
                 max="0.99"
                 value={fuzzyThreshold}
                 onChange={(e) => setFuzzyThreshold(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-mono"
+                className="w-full h-11 glass-input rounded-2xl px-3.5 text-xs text-[#F5F3EF] font-mono border border-white/10"
               />
-              <p className="text-[11px] text-slate-400 mt-1">Minimum similarity for fuzzy matching vendor names and invoice references (default 0.82).</p>
+              <p className="text-[11px] text-[#F5F3EF]/50 font-mono mt-1">Minimum similarity for fuzzy matching vendor names and invoice references (default 0.82).</p>
             </div>
           </div>
         </div>
 
         {/* Entity & Auditor Profile */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-2xs space-y-4">
-          <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-            <Building className="w-4 h-4 text-teal-600" />
-            <h3 className="text-sm font-bold text-slate-900">Audited Entity & Practitioner Sign-off</h3>
+        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+          <div className="border-b border-white/10 pb-3">
+            <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Audited Entity & Practitioner Sign-off</h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Certified institution details stamped on published audit workpapers</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div>
-              <span className="font-semibold text-slate-500 block">Company Name</span>
-              <p className="text-sm font-bold text-slate-900 mt-0.5">{user?.company_name || 'Acme Global Enterprise'}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-sans">
+            <div className="p-3.5 rounded-2xl glass-soft border border-white/10">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F3EF]/50 block">Audited Entity</span>
+              <p className="text-sm font-bold text-[#F5F3EF] font-display mt-0.5">{user?.company_name || 'Acme Global Enterprise'}</p>
             </div>
-            <div>
-              <span className="font-semibold text-slate-500 block">Lead Auditor</span>
-              <p className="text-sm font-bold text-slate-900 mt-0.5">{user?.full_name || 'Sarah Jenkins'}</p>
+            <div className="p-3.5 rounded-2xl glass-soft border border-white/10">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F3EF]/50 block">Lead Auditor</span>
+              <p className="text-sm font-bold text-[#F5F3EF] font-display mt-0.5">{user?.full_name || 'Sarah Jenkins'}</p>
             </div>
-            <div>
-              <span className="font-semibold text-slate-500 block">Practitioner Role</span>
-              <p className="text-sm font-bold text-teal-600 capitalize mt-0.5">{user?.role || 'Admin'}</p>
+            <div className="p-3.5 rounded-2xl glass-soft border border-white/10">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#F5F3EF]/50 block">Assurance Level</span>
+              <p className="text-sm font-bold font-mono text-[#FFC900] mt-0.5">{user?.role?.toUpperCase() || 'LEAD PARTNER'}</p>
             </div>
           </div>
         </div>
@@ -147,10 +134,10 @@ export const Settings: React.FC = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 flex items-center space-x-2 transition-all"
+            className="h-12 px-6 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs shadow-md shadow-[#FFC900]/20 transition-all flex items-center space-x-2"
           >
-            <Save className="w-4 h-4" />
-            <span>Save Configuration</span>
+            <span>Save Control Configuration</span>
+            <span className="font-mono text-xs">✓</span>
           </button>
         </div>
       </form>

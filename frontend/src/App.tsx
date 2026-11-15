@@ -50,10 +50,18 @@ const MainApp: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-3">
-          <div className="w-10 h-10 border-3 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs font-semibold text-slate-400">Loading FinAudit AI Platform...</p>
+      <div className="min-h-screen bg-[#08090B] flex items-center justify-center p-6 text-[#F5F3EF]">
+        <div className="glass-card p-8 flex flex-col items-center space-y-4 max-w-sm w-full text-center border border-white/15">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFC900] flex items-center justify-center shadow-lg shadow-[#FFC900]/20 animate-pulse">
+            <svg className="w-6 h-6 text-[#08090B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <circle cx="12" cy="12" r="4.5" />
+              <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-base font-bold font-display text-[#F5F3EF]">FinAudit Platform</h3>
+            <p className="text-xs text-[#F5F3EF]/60 font-mono mt-1">Initializing ledger & assurance engine...</p>
+          </div>
         </div>
       </div>
     );
@@ -64,22 +72,26 @@ const MainApp: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-      {/* Dark Navy Sidebar */}
+    <div className="min-h-screen bg-[#08090B] text-[#F5F3EF] flex relative overflow-x-hidden selection:bg-[#FFC900] selection:text-[#08090B]">
+      {/* Subtle fixed ambient background elements (Strictly 3-colour palette) */}
+      <div className="fixed top-0 right-1/4 w-[500px] h-[500px] bg-[#FFC900]/5 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed bottom-10 left-1/3 w-[600px] h-[400px] bg-white/[0.02] rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Slim Left Icon Rail (Sticky Full-Height) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         badgeCounts={badgeCounts}
       />
 
-      {/* Main Workspace (White / Light-Grey) */}
-      <div className="flex-1 ml-64 flex flex-col min-w-0">
+      {/* Main Workspace Column */}
+      <div className="flex-1 ml-20 flex flex-col min-w-0">
         <Navbar
           activeTab={activeTab}
           onRefreshData={refreshBadges}
         />
 
-        <main className="p-6 md:p-8 flex-1 overflow-y-auto">
+        <main className="px-6 pb-12 flex-1 overflow-y-auto">
           {activeTab === 'dashboard' && <Dashboard onNavigate={setActiveTab} />}
           {activeTab === 'documents' && <Documents />}
           {activeTab === 'transactions' && <Transactions />}
