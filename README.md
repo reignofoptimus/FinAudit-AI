@@ -1,11 +1,17 @@
 # FinAudit AI – AI-Powered Financial Audit Assistant
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-finaudit--ai--lemon.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://finaudit-ai-lemon.vercel.app/)
+<br>
+
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18.3+-61DAFB.svg?style=flat&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4+-38B2AC.svg?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Isolation--Forest-F7931E.svg?style=flat&logo=scikit-learn)](https://scikit-learn.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+
+> 🚀 **Live Interactive Application:** [https://finaudit-ai-lemon.vercel.app/](https://finaudit-ai-lemon.vercel.app/)  
+> *(Test out the interactive executive audit dashboard, OCR document parsing, transaction matching, and ML anomaly detection live in your browser!)*
 
 **FinAudit AI** is a modern, enterprise-grade financial auditing and assurance platform designed to automate and simplify auditing workflows using Artificial Intelligence, Machine Learning, and automated document extraction.
 
