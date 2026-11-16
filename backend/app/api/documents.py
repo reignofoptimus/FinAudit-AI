@@ -13,6 +13,7 @@ from app.models.transaction import Transaction
 from app.models.activity_log import ActivityLog
 from app.schemas.document import DocumentOut, ExtractedRecordOut, ExtractedRecordUpdate
 from app.services.auth_service import get_current_user
+from app.services.security_service import sanitize_filename, validate_file_magic
 from app.services.extractor_service import process_uploaded_document
 from app.services.matching_service import run_automated_matching
 from app.services.duplicate_service import run_duplicate_detection
@@ -36,21 +37,29 @@ async def upload_documents(
     uploaded_docs = []
 
     for file in files:
-        ext = os.path.splitext(file.filename)[1].lower()
+        clean_filename = sanitize_filename(file.filename)
+        ext = os.path.splitext(clean_filename)[1].lower()
         if ext not in ALLOWED_EXTENSIONS:
             raise HTTPException(
                 status_code=400,
                 detail=f"File '{file.filename}' has unsupported extension. Allowed: PDF, CSV, XLSX, XLS"
             )
 
-        # Save to disk
-        safe_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename.replace(' ', '_')}"
-        save_path = os.path.join(settings.UPLOAD_DIR, safe_name)
-
         content = await file.read()
         file_size = len(content)
         if file_size > MAX_FILE_SIZE:
             raise HTTPException(status_code=400, detail=f"File '{file.filename}' exceeds 25MB limit")
+
+        # Validate file header/magic bytes (Vulnerability 12: Not-a-photo upload)
+        if not validate_file_magic(content, clean_filename):
+            raise HTTPException(
+                status_code=400,
+                detail=f"File '{file.filename}' failed MIME/header signature verification. Rejected for security."
+            )
+
+        # Save to disk safely without directory traversal (Vulnerability 2 & 12)
+        safe_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{clean_filename}"
+        save_path = os.path.join(settings.UPLOAD_DIR, safe_name)
 
         with open(save_path, "wb") as f:
             f.write(content)
@@ -58,7 +67,7 @@ async def upload_documents(
         # Create Document record
         doc = Document(
             company_id=company_id,
-            filename=file.filename,
+            filename=clean_filename,
             file_path=save_path,
             file_type=ext.replace(".", ""),
             category=category,
@@ -177,9 +186,22 @@ def update_extracted_record(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    rec = db.query(ExtractedRecord).filter(ExtractedRecord.id == record_id).first()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: Ensure the extracted record belongs to the current user's company (Vulnerability 2)
+    rec = db.query(ExtractedRecord).join(
+        Document, ExtractedRecord.document_id == Document.id
+    ).filter(
+        ExtractedRecord.id == record_id,
+        Document.company_id == company_id
+    ).first()
     if not rec:
         raise HTTPException(status_code=404, detail="Extracted record not found")
+
+    # Validate price logic: tax cannot exceed total amount (Vulnerabilities 7 & 10)
+    current_total = payload.total_amount if payload.total_amount is not None else rec.total_amount
+    current_tax = payload.tax_amount if payload.tax_amount is not None else rec.tax_amount
+    if current_tax and current_total and current_tax > current_total:
+        raise HTTPException(status_code=400, detail="Tax amount cannot exceed total amount")
 
     if payload.invoice_number is not None:
         rec.invoice_number = payload.invoice_number

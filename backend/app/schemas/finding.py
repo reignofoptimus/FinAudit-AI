@@ -1,7 +1,8 @@
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from app.schemas.transaction import TransactionOut
+from app.services.security_service import sanitize_text
 
 class DiscrepancyOut(BaseModel):
     id: int
@@ -80,3 +81,10 @@ class MissingDocOut(BaseModel):
 class FindingResolveRequest(BaseModel):
     resolution_notes: str
     action: Optional[str] = "resolve"  # 'resolve', 'dismiss', 'investigate'
+
+    @field_validator("resolution_notes", mode="before")
+    @classmethod
+    def sanitize_notes(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=1000)
+        return v

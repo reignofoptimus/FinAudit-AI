@@ -55,7 +55,14 @@ def review_match(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    match_obj = db.query(TransactionMatch).filter(TransactionMatch.id == match_id).first()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: Ensure match belongs to current user's company (Vulnerabilities 2 & 8)
+    match_obj = db.query(TransactionMatch).join(
+        Transaction, TransactionMatch.primary_transaction_id == Transaction.id
+    ).filter(
+        TransactionMatch.id == match_id,
+        Transaction.company_id == company_id
+    ).first()
     if not match_obj:
         raise HTTPException(status_code=404, detail="Match not found")
 
@@ -96,11 +103,19 @@ def create_manual_match(
     current_user: User = Depends(get_current_user)
 ):
     company_id = current_user.company_id or 1
+    # Prevent self-matching (Vulnerability 9: Redeem x100 / Self-match)
+    if payload.primary_transaction_id == payload.matched_transaction_id:
+        raise HTTPException(status_code=400, detail="Cannot match a transaction with itself")
+
     t1 = db.query(Transaction).filter(Transaction.id == payload.primary_transaction_id, Transaction.company_id == company_id).first()
     t2 = db.query(Transaction).filter(Transaction.id == payload.matched_transaction_id, Transaction.company_id == company_id).first()
     
     if not t1 or not t2:
         raise HTTPException(status_code=404, detail="One or both transactions not found")
+
+    # Prevent replay / re-matching transactions already matched (Vulnerability 9)
+    if t1.match_status == "matched" or t2.match_status == "matched":
+        raise HTTPException(status_code=400, detail="One or both transactions are already matched")
 
     amt_diff = round(abs(t1.amount - t2.amount), 2)
     days_diff = abs((t1.transaction_date - t2.transaction_date).days)

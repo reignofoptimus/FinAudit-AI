@@ -1,6 +1,7 @@
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+from app.services.security_service import sanitize_text
 
 class ReportGenerateRequest(BaseModel):
     title: Optional[str] = "Comprehensive Financial Audit Report"
@@ -11,6 +12,13 @@ class ReportGenerateRequest(BaseModel):
     include_anomalies: bool = True
     include_missing_docs: bool = True
     risk_filter: Optional[str] = "all"  # 'all', 'high', 'medium', 'low'
+
+    @field_validator("title", "audit_period", "auditor_comments", mode="before")
+    @classmethod
+    def sanitize_report_inputs(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=1000)
+        return v
 
 class ReportOut(BaseModel):
     id: int

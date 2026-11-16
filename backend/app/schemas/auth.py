@@ -1,6 +1,7 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
+from app.services.security_service import sanitize_text
 
 class Token(BaseModel):
     access_token: str
@@ -24,6 +25,13 @@ class UserCreate(BaseModel):
     full_name: str
     role: Optional[str] = "auditor"
     company_name: Optional[str] = "Acme Global Enterprise"
+
+    @field_validator("full_name", "company_name", mode="before")
+    @classmethod
+    def sanitize_strings(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=150)
+        return v
 
 class UserOut(BaseModel):
     id: int

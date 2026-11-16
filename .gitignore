@@ -29,6 +29,7 @@ ENV/
 *.sqlite
 *.sqlite3
 finaudit.db
+backend/finaudit.db
 
 # Uploads & Reports generated at runtime
 backend/uploads/*
@@ -45,14 +46,21 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# Environment
+# Environment & Secrets
 .env
+.env.*
 .env.local
+.env.*.local
+*.env
+backend/.env*
+frontend/.env*
 
-# Video generation artifacts
+# Analysis & Video generation artifacts
+graphify-out/
+.graphify_analysis.json
+GRAPH_REPORT.md
 brag-output/
 brag-output-v2/
-.env.*.local
 
 # IDE
 .vscode/

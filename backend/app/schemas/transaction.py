@@ -1,6 +1,7 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
+from app.services.security_service import sanitize_text
 
 class TransactionOut(BaseModel):
     id: int
@@ -30,10 +31,17 @@ class TransactionOut(BaseModel):
 class TransactionCreate(BaseModel):
     source_type: str
     transaction_date: str
-    amount: float
+    amount: float = Field(..., gt=0.0, le=100_000_000.0)  # Enforce positive amount (Vulnerability 10)
     vendor_name: Optional[str] = None
     invoice_number: Optional[str] = None
     reference_no: Optional[str] = None
     description: Optional[str] = None
     transaction_type: Optional[str] = "expense"
     account_code: Optional[str] = "6000"
+
+    @field_validator("vendor_name", "invoice_number", "reference_no", "description", mode="before")
+    @classmethod
+    def sanitize_strings(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=500)
+        return v

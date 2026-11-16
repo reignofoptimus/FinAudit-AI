@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
@@ -12,12 +12,20 @@ from app.models.activity_log import ActivityLog
 from app.schemas.finding import MissingDocOut, FindingResolveRequest
 from app.services.auth_service import get_current_user
 from app.services.missing_doc_service import run_missing_document_scan
+from app.services.security_service import sanitize_text
 
 router = APIRouter(prefix="/missing-docs", tags=["Missing Documents"])
 
 class AttachDocumentRequest(BaseModel):
     document_id: int
     notes: Optional[str] = "Attached supporting evidence"
+
+    @field_validator("notes", mode="before")
+    @classmethod
+    def sanitize_notes(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=500)
+        return v
 
 @router.post("/run")
 def trigger_missing_doc_scan(
@@ -62,11 +70,20 @@ def attach_document_to_alert(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    alert = db.query(MissingDocumentAlert).filter(MissingDocumentAlert.id == alert_id).first()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: alert must belong to company (Vulnerability 2)
+    alert = db.query(MissingDocumentAlert).join(Transaction).filter(
+        MissingDocumentAlert.id == alert_id,
+        Transaction.company_id == company_id
+    ).first()
     if not alert:
         raise HTTPException(status_code=404, detail="Alert not found")
 
-    doc = db.query(Document).filter(Document.id == payload.document_id).first()
+    # Document must also belong to company (Vulnerability 2)
+    doc = db.query(Document).filter(
+        Document.id == payload.document_id,
+        Document.company_id == company_id
+    ).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
 
@@ -99,7 +116,12 @@ def resolve_missing_doc_alert(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    alert = db.query(MissingDocumentAlert).filter(MissingDocumentAlert.id == alert_id).first()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: alert must belong to company (Vulnerability 2)
+    alert = db.query(MissingDocumentAlert).join(Transaction).filter(
+        MissingDocumentAlert.id == alert_id,
+        Transaction.company_id == company_id
+    ).first()
     if not alert:
         raise HTTPException(status_code=404, detail="Alert not found")
 

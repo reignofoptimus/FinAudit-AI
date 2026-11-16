@@ -1,6 +1,7 @@
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
+from app.services.security_service import sanitize_text
 
 class ExtractedRecordOut(BaseModel):
     id: int
@@ -30,12 +31,19 @@ class ExtractedRecordOut(BaseModel):
 class ExtractedRecordUpdate(BaseModel):
     invoice_number: Optional[str] = None
     vendor_name: Optional[str] = None
-    total_amount: Optional[float] = None
-    tax_amount: Optional[float] = None
+    total_amount: Optional[float] = Field(None, ge=0.01, le=100_000_000.0)
+    tax_amount: Optional[float] = Field(None, ge=0.0, le=100_000_000.0)
     transaction_date: Optional[str] = None  # ISO format string
     payment_status: Optional[str] = None
     is_verified: Optional[bool] = None
     verification_notes: Optional[str] = None
+
+    @field_validator("invoice_number", "vendor_name", "verification_notes", mode="before")
+    @classmethod
+    def sanitize_inputs(cls, v):
+        if v is not None:
+            return sanitize_text(str(v), max_length=500)
+        return v
 
 class DocumentOut(BaseModel):
     id: int

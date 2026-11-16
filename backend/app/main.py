@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import engine, Base
+from app.services.security_service import RateLimitMiddleware
 from app.api import (
     auth,
     dashboard,
@@ -27,6 +28,9 @@ app = FastAPI(
     version=settings.VERSION,
     description="AI-Powered Financial Audit Assistant REST API"
 )
+
+# Rate Limiting Middleware (Vulnerabilities 11 & 14)
+app.add_middleware(RateLimitMiddleware)
 
 # CORS Middleware
 app.add_middleware(

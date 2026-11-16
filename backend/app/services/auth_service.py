@@ -53,7 +53,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 def require_role(allowed_roles: list[str]):
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
-        if current_user.role not in allowed_roles and "admin" not in allowed_roles:
+        # User must match allowed roles, or be an admin (superuser)
+        if current_user.role not in allowed_roles and current_user.role != "admin":
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Operation not permitted. Requires role: {', '.join(allowed_roles)}"

@@ -55,7 +55,12 @@ def resolve_discrepancy(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    disc = db.query(Discrepancy).filter(Discrepancy.id == discrepancy_id).first()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: Ensure discrepancy belongs to current user's company (Vulnerability 2)
+    disc = db.query(Discrepancy).join(Transaction).filter(
+        Discrepancy.id == discrepancy_id,
+        Transaction.company_id == company_id
+    ).first()
     if not disc:
         raise HTTPException(status_code=404, detail="Discrepancy not found")
 

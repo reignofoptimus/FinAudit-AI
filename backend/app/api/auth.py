@@ -70,7 +70,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
         email=user_data.email,
         hashed_password=get_password_hash(user_data.password),
         full_name=user_data.full_name,
-        role=user_data.role or "auditor",
+        role="auditor",  # Enforce auditor role; public registration cannot grant admin privileges
         company_id=company.id
     )
     db.add(new_user)

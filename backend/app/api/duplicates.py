@@ -68,7 +68,12 @@ def resolve_duplicate_group(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    records = db.query(DuplicateRecord).filter(DuplicateRecord.group_id == group_id).all()
+    company_id = current_user.company_id or 1
+    # Prevent IDOR: Ensure duplicate group belongs to current user's company (Vulnerability 2)
+    records = db.query(DuplicateRecord).join(Transaction).filter(
+        DuplicateRecord.group_id == group_id,
+        Transaction.company_id == company_id
+    ).all()
     if not records:
         raise HTTPException(status_code=404, detail="Duplicate group not found")
 
