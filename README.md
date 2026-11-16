@@ -13,6 +13,19 @@
 > 🚀 **Live Interactive Application:** [https://finaudit-ai-lemon.vercel.app/](https://finaudit-ai-lemon.vercel.app/)  
 > *(Test out the interactive executive audit dashboard, OCR document parsing, transaction matching, and ML anomaly detection live in your browser!)*
 
+<div align="center">
+  <br>
+  <a href="https://finaudit-ai-lemon.vercel.app/">
+    <img src="assets/demo.gif" alt="FinAudit AI Live Demo Walkthrough" width="100%" style="border-radius: 10px;" />
+  </a>
+  <p><em>Autonomous multi-ledger assurance that detects twin payments, tax variances, and statistical anomalies in milliseconds before ledger close.</em></p>
+  <p>
+    <a href="https://finaudit-ai-lemon.vercel.app/"><strong>🚀 Launch Live Demo</strong></a> &nbsp;&nbsp;•&nbsp;&nbsp;
+    <a href="assets/demo.mp4"><strong>🎬 Watch Full HD 1080p Video (.mp4)</strong></a>
+  </p>
+  <br>
+</div>
+
 **FinAudit AI** is a modern, enterprise-grade financial auditing and assurance platform designed to automate and simplify auditing workflows using Artificial Intelligence, Machine Learning, and automated document extraction.
 
 The application functions as an **AI-powered auditor assistant** that dramatically reduces manual repetitive verification work while ensuring final audit decisions, supervisory reviews, and regulatory attestations remain strictly under human auditor supervision.
