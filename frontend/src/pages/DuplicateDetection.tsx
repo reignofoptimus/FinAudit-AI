@@ -65,9 +65,9 @@ export const DuplicateDetection: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
             Duplicate Invoice & Double-Payment Defense
           </h2>
           <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -78,7 +78,7 @@ export const DuplicateDetection: React.FC = () => {
         <button
           onClick={handleRunDetection}
           disabled={isRunning}
-          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0 w-full md:w-auto justify-center active:scale-95 touch-manipulation"
         >
           <span>{isRunning ? 'Scanning Ledger...' : 'Run Duplicate Scan'}</span>
           <span className="font-mono text-xs">⚡</span>
@@ -86,13 +86,13 @@ export const DuplicateDetection: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="glass-card p-4 flex items-center space-x-2 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 flex flex-wrap items-center gap-2 border border-white/10 shadow-xl">
         <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Status:</span>
         {['all', 'flagged', 'resolved', 'false_positive'].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}
-            className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+            className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
               statusFilter === st
                 ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                 : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -113,7 +113,7 @@ export const DuplicateDetection: React.FC = () => {
           duplicateGroups.map((group) => (
             <div
               key={group.group_id}
-              className="glass-card p-6 space-y-4 hover:border-[#FFC900]/40 transition-all border border-white/10 shadow-xl"
+              className="glass-card p-4 sm:p-6 space-y-4 hover:border-[#FFC900]/40 transition-all border border-white/10 shadow-xl"
             >
               {/* Group Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">

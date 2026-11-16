@@ -185,7 +185,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6 pb-8">
       {/* TOP BANNER: AUDIT HEALTH SCORE & VERIFICATION OVERVIEW */}
-      <div className="glass-card p-6 border border-white/10 shadow-xl relative overflow-hidden">
+      <div className="glass-card p-4 sm:p-6 border border-white/10 shadow-xl relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFC900]/15 text-[#FFC900] border border-[#FFC900]/30 text-xs font-mono font-semibold mb-3">
@@ -201,13 +201,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </div>
 
           {/* Health Score & Status Badge Pill */}
-          <div className="flex items-center gap-6 glass-soft p-4 rounded-2xl border border-white/10 shrink-0">
+          <div className="flex items-center justify-between sm:justify-start gap-4 sm:gap-6 glass-soft p-3 sm:p-4 rounded-2xl border border-white/10 shrink-0">
             <div>
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#F5F3EF]/50 block">
                 Overall Health
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-3xl font-extrabold font-mono text-[#F5F3EF]">
+                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#F5F3EF]">
                   {stats?.audit_health_score ? `${stats.audit_health_score.toFixed(0)}%` : '84%'}
                 </span>
                 <span className="text-xs font-mono font-bold text-[#FFC900]">
@@ -350,11 +350,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       {/* TWO-THIRDS / ONE-THIRD ROW: REVENUE & LEDGER AREA CHART + AUDIT FINDINGS DONUT */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* REVENUE & EXPENDITURE AREA CHART (SPANS 2/3) */}
-        <div className="lg:col-span-2 glass-card p-6 flex flex-col justify-between border border-white/10 shadow-xl">
+        <div className="lg:col-span-2 glass-card p-4 sm:p-6 flex flex-col justify-between border border-white/10 shadow-xl">
           {/* Card Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-white/10">
             <div>
-              <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+              <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
                 Ledger Expenditure & Cash Flow Velocity
               </h2>
               <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -432,7 +432,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </div>
 
           {/* Row of 12 Month Labels in Mono Below */}
-          <div className="grid grid-cols-12 text-center text-[10px] font-mono font-medium text-[#F5F3EF]/50 pt-3 border-t border-white/10 mt-2">
+          <div className="grid grid-cols-12 text-center text-[9px] sm:text-[10px] font-mono font-medium text-[#F5F3EF]/50 pt-3 border-t border-white/10 mt-2 tracking-tighter sm:tracking-normal">
             {months.map((m) => (
               <span key={m}>{m}</span>
             ))}
@@ -440,10 +440,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         </div>
 
         {/* AUDIT RISK & FINDING DISTRIBUTION DONUT (SPANS 1/3) */}
-        <div className="glass-card p-6 flex flex-col justify-between border border-white/10 shadow-xl">
+        <div className="glass-card p-4 sm:p-6 flex flex-col justify-between border border-white/10 shadow-xl">
           {/* Card Header */}
           <div className="pb-3 border-b border-white/10 mb-4">
-            <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
               Audit Finding Distribution
             </h2>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -587,9 +587,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       {/* TWO-THIRDS / ONE-THIRD ROW: CRITICAL HIGH-RISK FINDINGS (Screenshot 2) + RECENT LEDGER ENTRIES */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* CRITICAL HIGH-RISK FINDINGS (EXACT SCREENSHOT 2 CARD - SPANS 2/3) */}
-        <div className="lg:col-span-2 glass-card p-6 flex flex-col justify-between border border-white/10 shadow-xl">
+        <div className="lg:col-span-2 glass-card p-4 sm:p-6 flex flex-col justify-between border border-white/10 shadow-xl">
           {/* Card Header with Shield Icon + Explore All Link */}
-          <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/10 mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#FFC900]/15 border border-[#FFC900]/30 flex items-center justify-center text-[#FFC900] shrink-0">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -599,7 +599,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+                <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
                   Critical High-Risk Findings
                 </h2>
                 <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -610,7 +610,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
             <button
               onClick={() => onNavigate('findings')}
-              className="text-xs font-bold text-[#08090B] px-3.5 py-1.5 rounded-xl bg-[#FFC900] hover:bg-[#FFD733] transition-colors shadow-md shadow-[#FFC900]/20 flex items-center gap-1.5 shrink-0"
+              className="text-xs font-bold text-[#08090B] px-4 py-2 rounded-xl bg-[#FFC900] hover:bg-[#FFD733] transition-colors shadow-md shadow-[#FFC900]/20 flex items-center justify-center gap-1.5 shrink-0 active:scale-95 touch-manipulation"
             >
               <span>Explore All</span>
               <span className="font-mono text-xs">→</span>
@@ -622,21 +622,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             {highRiskList.map((item) => (
               <div
                 key={`${item.type}-${item.id}`}
-                className="glass-soft p-4 rounded-2xl border border-white/10 hover:border-[#FFC900]/40 transition-all space-y-2 group"
+                className="glass-soft p-3.5 sm:p-4 rounded-2xl border border-white/10 hover:border-[#FFC900]/40 transition-all space-y-2 group"
               >
                 {/* Item Top Row: Risk Pill + Title (left) & Dollar Amount (right) */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-white/15 text-[#F5F3EF] border border-white/20">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider bg-white/15 text-[#F5F3EF] border border-white/20">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFC900]" />
                       <span>{item.risk_level}</span>
                     </span>
-                    <h4 className="text-sm font-bold font-display text-[#F5F3EF] tracking-tight">
+                    <h4 className="text-xs sm:text-sm font-bold font-display text-[#F5F3EF] tracking-tight">
                       {item.title}
                     </h4>
                   </div>
 
-                  <span className="text-base font-bold font-mono text-[#F5F3EF] shrink-0">
+                  <span className="text-sm sm:text-base font-bold font-mono text-[#F5F3EF] shrink-0">
                     ₹{Number(item.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -647,8 +647,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 </p>
 
                 {/* Meta row: Vendor + Date (left) & Investigate -> (right) */}
-                <div className="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
-                  <div className="flex items-center space-x-2 text-[#F5F3EF]/60 font-sans text-[11px]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                  <div className="flex items-center space-x-2 text-[#F5F3EF]/60 font-sans text-[11px] flex-wrap">
                     <span>Vendor: <strong className="text-[#F5F3EF] font-semibold">{item.vendor}</strong></span>
                     <span>•</span>
                     <span className="font-mono">Date: <strong className="text-[#F5F3EF] font-semibold">{item.date}</strong></span>
@@ -656,7 +656,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
                   <button
                     onClick={() => handleInvestigateFinding(item)}
-                    className="text-[#FFC900] group-hover:text-[#FFD733] font-semibold text-xs flex items-center gap-1 hover:underline transition-all"
+                    className="text-[#FFC900] group-hover:text-[#FFD733] font-semibold text-xs flex items-center gap-1 hover:underline transition-all self-end sm:self-auto active:scale-95 touch-manipulation"
                   >
                     <span>Investigate</span>
                     <span className="font-mono text-xs">→</span>
@@ -668,12 +668,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         </div>
 
         {/* RECENT TRANSACTIONS TABLE (SPANS 1/3) */}
-        <div className="glass-card p-6 flex flex-col justify-between border border-white/10 shadow-xl">
+        <div className="glass-card p-4 sm:p-6 flex flex-col justify-between border border-white/10 shadow-xl">
           {/* Header */}
           <div>
             <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
               <div>
-                <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+                <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
                   Recent Ledger Entries
                 </h2>
                 <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -682,7 +682,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               </div>
               <button
                 onClick={() => onNavigate('transactions')}
-                className="text-xs font-semibold text-[#FFC900] hover:text-[#FFD733] flex items-center gap-1"
+                className="text-xs font-semibold text-[#FFC900] hover:text-[#FFD733] flex items-center gap-1 active:scale-95 touch-manipulation"
               >
                 <span>View all</span>
                 <span className="font-mono text-xs">→</span>
@@ -727,7 +727,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           <div className="pt-4 border-t border-white/10 mt-4">
             <button
               onClick={() => onNavigate('matching')}
-              className="w-full py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 text-[#F5F3EF] font-semibold text-xs transition-colors border border-white/15 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-[#F5F3EF] font-semibold text-xs transition-colors border border-white/15 flex items-center justify-center gap-2 active:scale-95 touch-manipulation"
             >
               <span>Execute 3-Way Reconciliation</span>
               <span className="font-mono text-xs">⚡</span>

@@ -52,8 +52,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`glass-card p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-200 border border-white/10 ${
-        onClick ? 'cursor-pointer hover:-translate-y-1 hover:border-[#FFC900]/50 hover:shadow-xl' : ''
+      className={`glass-card p-4 sm:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-200 border border-white/10 ${
+        onClick ? 'cursor-pointer hover:-translate-y-1 hover:border-[#FFC900]/50 hover:shadow-xl active:scale-[0.98] touch-manipulation' : ''
       }`}
     >
       {/* Top Row: Label (left) + Tinted Icon Chip (right) */}

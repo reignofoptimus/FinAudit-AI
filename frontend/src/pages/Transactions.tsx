@@ -51,10 +51,10 @@ export const Transactions: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Filter Glass Card */}
-      <div className="glass-card p-5 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-5 border border-white/10 shadow-xl">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Search Box */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1 max-w-md w-full">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F5F3EF]/40">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" />
@@ -82,7 +82,7 @@ export const Transactions: React.FC = () => {
                 setPage(0);
               }}
               style={{ colorScheme: 'dark' }}
-              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans flex-1 sm:flex-none min-w-[130px]"
             >
               <option value="all" className="bg-[#08090B] text-[#F5F3EF]">All Sources</option>
               <option value="invoice" className="bg-[#08090B] text-[#F5F3EF]">Invoices</option>
@@ -97,7 +97,7 @@ export const Transactions: React.FC = () => {
                 setPage(0);
               }}
               style={{ colorScheme: 'dark' }}
-              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans flex-1 sm:flex-none min-w-[130px]"
             >
               <option value="all" className="bg-[#08090B] text-[#F5F3EF]">All Match States</option>
               <option value="matched" className="bg-[#08090B] text-[#F5F3EF]">Fully Matched</option>
@@ -109,7 +109,7 @@ export const Transactions: React.FC = () => {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               style={{ colorScheme: 'dark' }}
-              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
+              className="h-11 px-3.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans flex-1 sm:flex-none min-w-[130px]"
             >
               <option value="date_desc" className="bg-[#08090B] text-[#F5F3EF]">Newest First</option>
               <option value="date_asc" className="bg-[#08090B] text-[#F5F3EF]">Oldest First</option>
@@ -123,7 +123,7 @@ export const Transactions: React.FC = () => {
                 setRiskOnly(!riskOnly);
                 setPage(0);
               }}
-              className={`h-11 px-4 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2 border ${
+              className={`h-11 px-4 rounded-2xl text-xs font-semibold transition-all flex items-center justify-center gap-2 border flex-1 sm:flex-none active:scale-95 touch-manipulation ${
                 riskOnly
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-md shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF] border-white/10 hover:border-white/30'
@@ -138,14 +138,20 @@ export const Transactions: React.FC = () => {
 
       {/* Transactions Data Table */}
       <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">Consolidated Financial Transactions</h3>
+            <h3 className="text-sm sm:text-base font-bold font-display text-[#F5F3EF] tracking-tight">Consolidated Financial Transactions</h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Cross-verified multi-source ledger journals</p>
           </div>
-          <span className="text-xs font-mono font-semibold text-[#F5F3EF] px-3 py-1 rounded-full bg-white/10 border border-white/10">
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] px-3 py-1 rounded-full bg-white/10 border border-white/10 self-start sm:self-auto">
             Page {page + 1}
           </span>
+        </div>
+
+        {/* Mobile Horizontal Scroll Indicator */}
+        <div className="md:hidden flex items-center justify-between px-4 py-2 bg-white/[0.03] border-b border-white/10 text-[11px] font-mono text-[#F5F3EF]/50">
+          <span>Scroll horizontally for full ledger →</span>
+          <span className="text-[#FFC900] font-bold">9 columns</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -242,7 +248,7 @@ export const Transactions: React.FC = () => {
           <button
             disabled={page === 0}
             onClick={() => setPage(page - 1)}
-            className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10"
+            className="px-4 py-2.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10 active:scale-95 touch-manipulation"
           >
             ← Previous
           </button>
@@ -252,7 +258,7 @@ export const Transactions: React.FC = () => {
           <button
             disabled={transactions.length < limit}
             onClick={() => setPage(page + 1)}
-            className="px-4 py-2 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10"
+            className="px-4 py-2.5 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 border border-white/10 active:scale-95 touch-manipulation"
           >
             Next →
           </button>

@@ -88,9 +88,9 @@ export const AnomalyDetection: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
             Statistical Outlier & Distribution Analysis
           </h2>
           <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -101,7 +101,7 @@ export const AnomalyDetection: React.FC = () => {
         <button
           onClick={handleRunModel}
           disabled={isRunning}
-          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0 w-full md:w-auto justify-center active:scale-95 touch-manipulation"
         >
           <span>{isRunning ? 'Scoring Deviations...' : 'Execute Outlier Analysis'}</span>
           <span className="font-mono text-xs">⚡</span>
@@ -109,8 +109,8 @@ export const AnomalyDetection: React.FC = () => {
       </div>
 
       {/* Scatter Plot: Amount vs Outlier Score */}
-      <div className="glass-card p-6 border border-white/10 shadow-xl">
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+      <div className="glass-card p-4 sm:p-6 border border-white/10 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-white/10">
           <div>
             <h3 className="text-sm font-bold font-display text-[#F5F3EF]">
               Deviation Score vs Expenditure Volume
@@ -119,7 +119,7 @@ export const AnomalyDetection: React.FC = () => {
               Visual mapping of statistical outlier intensity across transaction values
             </p>
           </div>
-          <span className="text-[11px] font-mono font-semibold text-[#FFC900] bg-[#FFC900]/15 border border-[#FFC900]/30 px-3 py-1 rounded-full">
+          <span className="text-[11px] font-mono font-semibold text-[#FFC900] bg-[#FFC900]/15 border border-[#FFC900]/30 px-3 py-1 rounded-full self-start sm:self-auto">
             Outlier Ratio: 8%
           </span>
         </div>
@@ -178,13 +178,13 @@ export const AnomalyDetection: React.FC = () => {
 
       {/* Filter Tabs */}
       <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 shadow-xl">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Risk Severity:</span>
           {['all', 'high', 'medium', 'low'].map((r) => (
             <button
               key={r}
               onClick={() => setRiskFilter(r)}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
                 riskFilter === r
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -195,13 +195,13 @@ export const AnomalyDetection: React.FC = () => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Auditor Status:</span>
           {['all', 'unreviewed', 'reviewed'].map((s) => (
             <button
               key={s}
               onClick={() => setReviewedFilter(s)}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
                 reviewedFilter === s
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -215,18 +215,24 @@ export const AnomalyDetection: React.FC = () => {
 
       {/* Anomaly Outliers Table */}
       <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">
+            <h3 className="text-sm sm:text-base font-bold font-display text-[#F5F3EF] tracking-tight">
               Statistical Outlier Investigation Queue
             </h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
               Requires auditor verification to confirm commercial rationale or investigate
             </p>
           </div>
-          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full">
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full self-start sm:self-auto">
             {anomalies.length} Flagged
           </span>
+        </div>
+
+        {/* Mobile Horizontal Scroll Indicator */}
+        <div className="md:hidden flex items-center justify-between px-4 py-2 bg-white/[0.03] border-b border-white/10 text-[11px] font-mono text-[#F5F3EF]/50">
+          <span>Scroll horizontally for all outlier metrics →</span>
+          <span className="text-[#FFC900] font-bold">8 columns</span>
         </div>
 
         <div className="overflow-x-auto">

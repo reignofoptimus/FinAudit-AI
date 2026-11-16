@@ -19,8 +19,8 @@ export const Settings: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl pb-8">
       {/* Banner */}
-      <div className="glass-card p-6 border border-white/10 shadow-xl">
-        <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+      <div className="glass-card p-4 sm:p-6 border border-white/10 shadow-xl">
+        <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
           Audit Controls & Materiality Parameters
         </h2>
         <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -30,7 +30,7 @@ export const Settings: React.FC = () => {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Risk Thresholds */}
-        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+        <div className="glass-card p-4 sm:p-6 space-y-4 border border-white/10 shadow-xl">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Financial Materiality Limits</h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Defines variance levels for mandatory forensic workpaper escalation</p>
@@ -66,7 +66,7 @@ export const Settings: React.FC = () => {
         </div>
 
         {/* Statistical Scoring Settings */}
-        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+        <div className="glass-card p-4 sm:p-6 space-y-4 border border-white/10 shadow-xl">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Statistical Outlier & Matching Tolerances</h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Algorithmic parameter tuning for distribution surveillance and fuzzy deduplication</p>
@@ -108,7 +108,7 @@ export const Settings: React.FC = () => {
         </div>
 
         {/* Entity & Auditor Profile */}
-        <div className="glass-card p-6 space-y-4 border border-white/10 shadow-xl">
+        <div className="glass-card p-4 sm:p-6 space-y-4 border border-white/10 shadow-xl">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-sm font-bold font-display text-[#F5F3EF]">Audited Entity & Practitioner Sign-off</h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">Certified institution details stamped on published audit workpapers</p>
@@ -134,7 +134,7 @@ export const Settings: React.FC = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="h-12 px-6 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs shadow-md shadow-[#FFC900]/20 transition-all flex items-center space-x-2"
+            className="h-12 px-6 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs shadow-md shadow-[#FFC900]/20 transition-all flex items-center justify-center space-x-2 w-full sm:w-auto active:scale-95 touch-manipulation"
           >
             <span>Save Control Configuration</span>
             <span className="font-mono text-xs">✓</span>

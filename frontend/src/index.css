@@ -10,18 +10,20 @@
   body {
     background-color: #08090B;
     color: #F5F3EF;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color-scheme: dark;
+    overflow-x: hidden;
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   .font-mono, code, pre, .mono-num {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     font-feature-settings: 'tnum' on, 'zero' on;
   }
 
@@ -43,7 +45,7 @@
 
 /* Glassmorphism primitives strictly adhering to the 3-colour palette (Midnight Black base, Pure White glass, Vibrant Golden Yellow accent) */
 .glass-card {
-  background: linear-gradient(180deg, rgba(20, 22, 28, 0.82) 0%, rgba(10, 11, 15, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(20, 22, 28, 0.82) 0%, rgba(10, 11, 15, 0.94) 100%);
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid rgba(245, 243, 239, 0.12);
@@ -52,7 +54,9 @@
 }
 
 .glass-card-hover {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
 }
 
 .glass-card-hover:hover {
@@ -76,7 +80,7 @@
   border: 1px solid rgba(245, 243, 239, 0.12);
   color: #F5F3EF;
   color-scheme: dark;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-pill:hover {
@@ -91,7 +95,7 @@
   border: 1px solid rgba(245, 243, 239, 0.14);
   color: #F5F3EF;
   color-scheme: dark;
-  transition: all 0.15s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .glass-input:focus {
@@ -99,6 +103,27 @@
   background: rgba(245, 243, 239, 0.09);
   border-color: #FFC900;
   box-shadow: 0 0 0 3px rgba(255, 201, 0, 0.25);
+}
+
+/* Button & Interactive Micro-Interactions */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Tab Transition Animation */
+.tab-enter {
+  animation: tabFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Minimal Custom Scrollbar */

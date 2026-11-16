@@ -58,9 +58,9 @@ export const VendorAnalysis: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
             Counterparty Spend & Risk Surveillance
           </h2>
           <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -98,7 +98,7 @@ export const VendorAnalysis: React.FC = () => {
               <div
                 key={vendor.id}
                 onClick={() => openVendorDetail(vendor)}
-                className="glass-card p-6 cursor-pointer hover:border-[#FFC900]/50 transition-all flex flex-col justify-between border border-white/10 shadow-xl"
+                className="glass-card p-4 sm:p-6 cursor-pointer hover:border-[#FFC900]/50 transition-all flex flex-col justify-between border border-white/10 shadow-xl active:scale-[0.99] touch-manipulation"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2 pb-3 border-b border-white/10">

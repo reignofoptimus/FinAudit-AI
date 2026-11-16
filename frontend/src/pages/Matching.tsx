@@ -72,9 +72,9 @@ export const Matching: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Action Header Banner */}
-      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
             Transaction Matching & Reconciliation Engine
           </h2>
           <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -85,7 +85,7 @@ export const Matching: React.FC = () => {
         <button
           onClick={handleRunMatching}
           disabled={isRunning}
-          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0 w-full md:w-auto justify-center active:scale-95 touch-manipulation"
         >
           <span>{isRunning ? 'Reconciling Ledger Pools...' : 'Execute Matching Engine'}</span>
           <span className="font-mono text-xs">⚡</span>
@@ -94,13 +94,13 @@ export const Matching: React.FC = () => {
 
       {/* Filter Tabs */}
       <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 shadow-xl">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Status:</span>
           {['all', 'suggested', 'confirmed', 'rejected'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
                 statusFilter === st
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -111,13 +111,13 @@ export const Matching: React.FC = () => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Match Type:</span>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans shrink-0">Match Type:</span>
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             style={{ colorScheme: 'dark' }}
-            className="h-10 px-3 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans"
+            className="h-10 px-3 rounded-2xl glass-pill text-xs font-semibold text-[#F5F3EF] bg-[#08090B] border border-white/10 cursor-pointer font-sans w-full sm:w-auto"
           >
             <option value="all" className="bg-[#08090B] text-[#F5F3EF]">All Match Types</option>
             <option value="exact" className="bg-[#08090B] text-[#F5F3EF]">Exact (100% Invoice & Amount)</option>
@@ -143,11 +143,11 @@ export const Matching: React.FC = () => {
             return (
               <div
                 key={m.id}
-                className="glass-card p-6 space-y-4 hover:border-[#FFC900]/40 transition-all border border-white/10 shadow-xl"
+                className="glass-card p-4 sm:p-6 space-y-4 hover:border-[#FFC900]/40 transition-all border border-white/10 shadow-xl"
               >
                 {/* Match Header */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 flex-wrap">
                     <span className="text-xs font-bold font-mono text-[#F5F3EF]">Match #{m.id}</span>
                     <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/10 text-[#F5F3EF] capitalize">
                       {m.match_type.replace('_', ' ')}
@@ -166,13 +166,13 @@ export const Matching: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => setReviewMatchItem({ match: m, action: 'confirmed' })}
-                          className="px-3.5 py-1.5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-colors shadow-sm shadow-[#FFC900]/20"
+                          className="px-3.5 py-1.5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-colors shadow-sm shadow-[#FFC900]/20 active:scale-95 touch-manipulation"
                         >
                           Confirm
                         </button>
                         <button
                           onClick={() => setReviewMatchItem({ match: m, action: 'rejected' })}
-                          className="px-3.5 py-1.5 rounded-2xl glass-pill hover:bg-white/10 text-[#F5F3EF] font-semibold text-xs transition-colors border border-white/10"
+                          className="px-3.5 py-1.5 rounded-2xl glass-pill hover:bg-white/10 text-[#F5F3EF] font-semibold text-xs transition-colors border border-white/10 active:scale-95 touch-manipulation"
                         >
                           Reject
                         </button>
@@ -233,7 +233,7 @@ export const Matching: React.FC = () => {
                 </div>
 
                 {/* Match Reason & Variance Note */}
-                <div className={`p-3 rounded-2xl text-xs flex items-center justify-between font-mono ${
+                <div className={`p-3 rounded-2xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono ${
                   isMismatch
                     ? 'bg-[#FFC900]/15 text-[#FFC900] border border-[#FFC900]/40'
                     : 'glass-soft text-[#F5F3EF] border border-white/10'
@@ -244,7 +244,7 @@ export const Matching: React.FC = () => {
                   </div>
 
                   {m.amount_difference > 0 && (
-                    <span className="font-bold text-[#08090B] bg-[#FFC900] px-2 py-0.5 rounded-md">
+                    <span className="font-bold text-[#08090B] bg-[#FFC900] px-2 py-0.5 rounded-md self-start sm:self-auto shrink-0">
                       Variance: ₹{m.amount_difference.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </span>
                   )}

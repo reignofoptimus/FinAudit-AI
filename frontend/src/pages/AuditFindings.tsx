@@ -69,9 +69,9 @@ export const AuditFindings: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Banner */}
-      <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
+      <div className="glass-card p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-white/10 shadow-xl">
         <div>
-          <h2 className="text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold font-display text-[#F5F3EF] tracking-tight">
             Financial Discrepancy & Variance Analysis
           </h2>
           <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
@@ -82,7 +82,7 @@ export const AuditFindings: React.FC = () => {
         <button
           onClick={handleRunAnalysis}
           disabled={isRunning}
-          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0"
+          className="h-11 px-5 rounded-2xl bg-[#FFC900] hover:bg-[#FFD733] text-[#08090B] font-bold text-xs transition-all shadow-md shadow-[#FFC900]/20 flex items-center space-x-2 disabled:opacity-50 shrink-0 w-full md:w-auto justify-center active:scale-95 touch-manipulation"
         >
           <span>{isRunning ? 'Analyzing Ledger Pools...' : 'Execute Variance Engine'}</span>
           <span className="font-mono text-xs">⚡</span>
@@ -91,13 +91,13 @@ export const AuditFindings: React.FC = () => {
 
       {/* Filter Tabs */}
       <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 shadow-xl">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Risk Severity:</span>
           {['all', 'high', 'medium', 'low'].map((r) => (
             <button
               key={r}
               onClick={() => setRiskFilter(r)}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
                 riskFilter === r
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -108,13 +108,13 @@ export const AuditFindings: React.FC = () => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-[#F5F3EF]/60 font-sans">Status:</span>
           {['all', 'unresolved', 'resolved', 'dismissed'].map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border ${
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold capitalize transition-all border active:scale-95 touch-manipulation ${
                 statusFilter === s
                   ? 'bg-[#FFC900] text-[#08090B] font-bold border-[#FFC900] shadow-sm shadow-[#FFC900]/20'
                   : 'glass-pill text-[#F5F3EF]/70 hover:text-[#F5F3EF] border-white/10'
@@ -128,18 +128,24 @@ export const AuditFindings: React.FC = () => {
 
       {/* Discrepancies Table */}
       <div className="glass-card overflow-hidden border border-white/10 shadow-xl">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold font-display text-[#F5F3EF] tracking-tight">
+            <h3 className="text-sm sm:text-base font-bold font-display text-[#F5F3EF] tracking-tight">
               Identified Audit Variances
             </h3>
             <p className="text-xs text-[#F5F3EF]/60 font-sans mt-0.5">
               Documented inconsistencies requiring evidentiary audit review
             </p>
           </div>
-          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full">
+          <span className="text-xs font-mono font-semibold text-[#F5F3EF] bg-white/10 border border-white/10 px-3 py-1 rounded-full self-start sm:self-auto">
             {discrepancies.length} Tracked Variances
           </span>
+        </div>
+
+        {/* Mobile Horizontal Scroll Indicator */}
+        <div className="md:hidden flex items-center justify-between px-4 py-2 bg-white/[0.03] border-b border-white/10 text-[11px] font-mono text-[#F5F3EF]/50">
+          <span>Scroll horizontally for all variance metrics →</span>
+          <span className="text-[#FFC900] font-bold">9 columns</span>
         </div>
 
         <div className="overflow-x-auto">
