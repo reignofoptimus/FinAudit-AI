@@ -145,7 +145,7 @@ pie title Pre-Seeded Audit Benchmark Distribution (160 Records)
 |---|---|---|
 | **Executive Dashboard** | <img src="assets/dashboard-preview.jpg" alt="Executive Dashboard" width="360" /> | Real-time surveillance of transactions, variance ratios, risk queues, and ledger velocity |
 | **3-Way Reconciliation Studio** | <img src="assets/reconciliation-preview.jpg" alt="Reconciliation Studio" width="360" /> | Automated invoice-to-bank ledger matching with laser cross-checks and one-click auditor approval |
-| **Attestation & Assurance Dossier** | <img src="assets/assurance-seal-preview.jpg" alt="Assurance Dossier" width="360" /> | Continuous audit verification, statutory tax anomaly isolation, and formal audit paper sign-off |
+| **ML Anomaly & Outlier Engine** | <img src="assets/anomalies-preview.jpg" alt="Anomaly Engine" width="360" /> | Scikit-Learn Isolation Forest ensemble isolating off-cycle disbursements, velocity spikes, and high-risk outliers |
 
 ---
 
@@ -237,9 +237,9 @@ FinAudit AI includes pre-formatted financial evidence files to test the OCR engi
 FinAudit-AI/
 ├── assets/                       # High-definition demonstration assets and UI previews
 │   ├── demo.gif                  # Autoplaying product walkthrough
-│   ├── dashboard-preview.jpg     # Executive dashboard preview
-│   ├── reconciliation-preview.jpg # 3-way reconciliation studio preview
-│   └── assurance-seal-preview.jpg # Institutional assurance dossier preview
+│   ├── dashboard-preview.jpg     # Executive dashboard interface
+│   ├── reconciliation-preview.jpg # 3-way reconciliation studio interface
+│   └── anomalies-preview.jpg     # ML statistical outlier detection interface
 ├── backend/
 │   ├── app/
 │   │   ├── api/                  # REST endpoints (auth, dashboard, docs, txs, matching, anomalies...)

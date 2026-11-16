@@ -48,6 +48,10 @@ yarn-error.log*
 # Environment
 .env
 .env.local
+
+# Video generation artifacts
+brag-output/
+brag-output-v2/
 .env.*.local
 
 # IDE
