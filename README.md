@@ -29,9 +29,7 @@
 <p align="center">
   <a href="https://finaudit-ai-lemon.vercel.app/"><strong>🚀 Launch Live Application</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="assets/demo.mp4"><strong>🎬 Watch Full HD 1080p Video (.mp4)</strong></a>
-  &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="#-quick-start"><strong>⚡ Quick Start</strong></a>
+  <a href="#quick-start"><strong>⚡ Quick Start</strong></a>
 </p>
 
 </div>
@@ -40,20 +38,18 @@
 
 ## 📑 Table of Contents
 
-- [✨ Overview](#-overview)
-- [⚡ Key Capabilities](#-key-capabilities)
-- [🏗️ System Architecture](#️-system-architecture)
-- [📊 Benchmark & Findings](#-benchmark--findings)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [📸 Application Walkthrough](#-application-walkthrough)
-- [🚀 Quick Start](#-quick-start)
-- [🔐 Demo Credentials](#-demo-credentials)
-- [🧪 Document Upload & OCR Testing](#-document-upload--ocr-testing)
-- [📁 Repository Structure](#-repository-structure)
-- [📈 Repository Analytics](#-repository-analytics)
-- [🗺️ Product Roadmap](#️-product-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [✨ Overview](#overview)
+- [⚡ Key Capabilities](#key-capabilities)
+- [🏗️ System Architecture](#system-architecture)
+- [📊 Benchmark & Findings](#benchmark--findings)
+- [🛠️ Tech Stack](#tech-stack)
+- [📸 Application Walkthrough](#application-walkthrough)
+- [🚀 Quick Start](#quick-start)
+- [🔐 Demo Credentials](#demo-credentials)
+- [🧪 Document Upload & OCR Testing](#document-upload--ocr-testing)
+- [📁 Repository Structure](#repository-structure)
+- [🤝 Contributing](#contributing)
+- [📄 License](#license)
 
 ---
 
@@ -147,9 +143,9 @@ pie title Pre-Seeded Audit Benchmark Distribution (160 Records)
 
 | Module | Interface Preview | Description |
 |---|---|---|
-| **Executive Dashboard** | <img src="assets/demo-preview.jpg" alt="Executive Dashboard" width="360" /> | Real-time surveillance of transactions, variance ratios, risk queues, and ledger velocity |
-| **OCR Document Parser** | <img src="assets/demo-preview.jpg" alt="Document Parser" width="360" /> | Drag-and-drop invoice and ledger ingestion with in-browser editable extraction tables |
-| **Reconciliation Workbench** | <img src="assets/demo-preview.jpg" alt="Reconciliation Workbench" width="360" /> | Side-by-side ledger comparisons with one-click auditor approval and variance memos |
+| **Executive Dashboard** | <img src="assets/dashboard-preview.jpg" alt="Executive Dashboard" width="360" /> | Real-time surveillance of transactions, variance ratios, risk queues, and ledger velocity |
+| **3-Way Reconciliation Studio** | <img src="assets/reconciliation-preview.jpg" alt="Reconciliation Studio" width="360" /> | Automated invoice-to-bank ledger matching with laser cross-checks and one-click auditor approval |
+| **Attestation & Assurance Dossier** | <img src="assets/assurance-seal-preview.jpg" alt="Assurance Dossier" width="360" /> | Continuous audit verification, statutory tax anomaly isolation, and formal audit paper sign-off |
 
 ---
 
@@ -239,74 +235,39 @@ FinAudit AI includes pre-formatted financial evidence files to test the OCR engi
 
 ```
 FinAudit-AI/
-├── assets/                  # High-definition video demos, banners, and preview assets
-│   ├── demo.gif             # Autoplaying product walkthrough
-│   ├── demo.mp4             # Full HD 1080p demonstration video
-│   └── demo-preview.jpg     # Application interface poster
+├── assets/                       # High-definition demonstration assets and UI previews
+│   ├── demo.gif                  # Autoplaying product walkthrough
+│   ├── dashboard-preview.jpg     # Executive dashboard preview
+│   ├── reconciliation-preview.jpg # 3-way reconciliation studio preview
+│   └── assurance-seal-preview.jpg # Institutional assurance dossier preview
 ├── backend/
 │   ├── app/
-│   │   ├── api/             # REST endpoints (auth, dashboard, docs, txs, matching, anomalies...)
-│   │   ├── models/          # SQLAlchemy relational models (User, Document, Transaction...)
-│   │   ├── schemas/         # Pydantic v2 validation contracts
-│   │   ├── services/        # Extractor, matching, duplicate, anomaly, report generators
-│   │   ├── sample_data/     # 160+ transaction generator & sample test documents
-│   │   ├── config.py        # Risk parameters, thresholds, and environment config
-│   │   ├── database.py      # SQLAlchemy session manager & engine setup
-│   │   └── main.py          # FastAPI application factory & router mounting
-│   ├── run.py               # Uvicorn server bootstrapper
-│   └── requirements.txt     # Python dependency specifications
+│   │   ├── api/                  # REST endpoints (auth, dashboard, docs, txs, matching, anomalies...)
+│   │   ├── models/               # SQLAlchemy relational models (User, Document, Transaction...)
+│   │   ├── schemas/              # Pydantic v2 validation contracts
+│   │   ├── services/             # Extractor, matching, duplicate, anomaly, report generators
+│   │   ├── sample_data/          # 160+ transaction generator & sample test documents
+│   │   ├── config.py             # Risk parameters, thresholds, and environment config
+│   │   ├── database.py           # SQLAlchemy session manager & engine setup
+│   │   └── main.py               # FastAPI application factory & router mounting
+│   ├── run.py                    # Uvicorn server bootstrapper
+│   └── requirements.txt          # Python dependency specifications
 ├── frontend/
 │   ├── src/
-│   │   ├── api/             # Axios typed API client
-│   │   ├── components/      # UI components (Sidebar, Navbar, MetricCard, StatusBadge...)
-│   │   ├── context/         # AuthContext & ToastContext providers
-│   │   ├── pages/           # 11 modules: Dashboard, Documents, Matching, Anomalies...
-│   │   ├── types/           # Domain TypeScript interfaces
-│   │   └── App.tsx          # Application routing & permission gating
-│   ├── tailwind.config.js   # Design system tokens & utility classes
-│   └── package.json         # Node.js dependencies & scripts
-├── start_all.bat            # Dual-stack automated launcher
-├── start_backend.bat        # Dedicated backend runner
-├── start_frontend.bat       # Dedicated frontend runner
-├── LICENSE                  # MIT Open Source License
-└── README.md                # Comprehensive technical documentation
+│   │   ├── api/                  # Axios typed API client
+│   │   ├── components/           # UI components (Sidebar, Navbar, MetricCard, StatusBadge...)
+│   │   ├── context/              # AuthContext & ToastContext providers
+│   │   ├── pages/                # 11 modules: Dashboard, Documents, Matching, Anomalies...
+│   │   ├── types/                # Domain TypeScript interfaces
+│   │   └── App.tsx               # Application routing & permission gating
+│   ├── tailwind.config.js        # Design system tokens & utility classes
+│   └── package.json              # Node.js dependencies & scripts
+├── start_all.bat                 # Dual-stack automated launcher
+├── start_backend.bat             # Dedicated backend runner
+├── start_frontend.bat            # Dedicated frontend runner
+├── LICENSE                       # MIT Open Source License
+└── README.md                     # Comprehensive technical documentation
 ```
-
----
-
-## 📈 Repository Analytics
-
-<div align="center">
-
-<a href="https://github.com/reignofoptimus/FinAudit-AI">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=reignofoptimus&repo=FinAudit-AI&theme=tokyonight" alt="FinAudit-AI Repo Card" />
-</a>
-
-<br><br>
-
-[![Star History Chart](https://api.star-history.com/svg?repos=reignofoptimus/FinAudit-AI&type=Date)](https://star-history.com/#reignofoptimus/FinAudit-AI&Date)
-
-</div>
-
----
-
-## 🗺️ Product Roadmap
-
-- [x] **Phase 1: Core Reconciliation & Anomaly Engine**
-  - [x] Multi-tier 3-way transaction reconciliation (exact + sequence similarity)
-  - [x] Isolation Forest ML model for statistical outlier isolation
-  - [x] ReportLab multi-page executive PDF workpaper generator
-- [x] **Phase 2: Live Deployment & Cloud Access**
-  - [x] Production deployment on Vercel (`finaudit-ai-lemon.vercel.app`)
-  - [x] Self-contained mock dataset and interactive one-click auditor sign-in
-- [ ] **Phase 3: Production Database & Multi-Tenancy**
-  - [ ] Alembic migration suite with managed PostgreSQL / Supabase adapter
-  - [ ] Multi-tenant workspace partitioning for independent audit firms
-- [ ] **Phase 4: Generative Audit Synthesis (Claude Ultra Integration)**
-  - [ ] Multi-document semantic reconciliation using Claude Ultra long context
-  - [ ] Automated natural-language audit memo drafting according to IFRS/GAAP standards
-- [ ] **Phase 5: ERP & Accounting Integrations**
-  - [ ] Native synchronization connectors for Xero, QuickBooks Online, and NetSuite
 
 ---
 
