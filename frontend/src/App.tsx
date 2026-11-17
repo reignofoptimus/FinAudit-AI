@@ -15,10 +15,11 @@ import { AnomalyDetection } from './pages/AnomalyDetection';
 import { VendorAnalysis } from './pages/VendorAnalysis';
 import { AuditReports } from './pages/AuditReports';
 import { Settings } from './pages/Settings';
+import { LoaderScreen } from './components/LoaderScreen';
 import { api } from './api/client';
 
 const MainApp: React.FC = () => {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, finishLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<NavTab>('dashboard');
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [badgeCounts, setBadgeCounts] = useState<{
@@ -50,22 +51,7 @@ const MainApp: React.FC = () => {
   }, [user, activeTab]);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#08090B] flex items-center justify-center p-6 text-[#F5F3EF]">
-        <div className="glass-card p-8 flex flex-col items-center space-y-4 max-w-sm w-full text-center border border-white/15">
-          <div className="w-12 h-12 rounded-2xl bg-[#FFC900] flex items-center justify-center shadow-lg shadow-[#FFC900]/25 animate-pulse">
-            <svg className="w-6 h-6 text-[#08090B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="12" cy="12" r="4.5" />
-              <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-base font-bold font-display text-[#F5F3EF]">FinAudit Platform</h3>
-            <p className="text-xs text-[#F5F3EF]/60 font-mono mt-1">Initializing ledger & assurance engine...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoaderScreen onReady={finishLoading} />;
   }
 
   if (!user) {

@@ -9,6 +9,7 @@ interface AuthContextType {
   login: (credentials: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  finishLoading: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,26 +25,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setToken(null);
     };
     window.addEventListener('auth-unauthorized', handleUnauthorized);
-
-    const initAuth = async () => {
-      const savedToken = localStorage.getItem('finaudit_token');
-      if (savedToken) {
-        try {
-          const profile = await api.getProfile();
-          setUser(profile);
-          setToken(savedToken);
-        } catch {
-          localStorage.removeItem('finaudit_token');
-          setToken(null);
-          setUser(null);
-        }
-      }
-      setIsLoading(false);
-    };
-
-    initAuth();
     return () => window.removeEventListener('auth-unauthorized', handleUnauthorized);
   }, []);
+
+  const finishLoading = async () => {
+    const savedToken = localStorage.getItem('finaudit_token');
+    if (savedToken) {
+      try {
+        const profile = await api.getProfile();
+        setUser(profile);
+        setToken(savedToken);
+      } catch {
+        localStorage.removeItem('finaudit_token');
+        setToken(null);
+        setUser(null);
+      }
+    }
+    setIsLoading(false);
+  };
 
   const login = async (credentials: { email: string; password: string }) => {
     const data: AuthResponse = await api.login(credentials);
@@ -70,7 +69,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, logout, setUser }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, logout, setUser, finishLoading }}>
       {children}
     </AuthContext.Provider>
   );

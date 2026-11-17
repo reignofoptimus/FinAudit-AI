@@ -46,6 +46,22 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const api = {
+  // System Health / Cold Start Probe
+  checkHealth: async (): Promise<boolean> => {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 7000);
+      const res = await fetch(`${API_BASE_URL}/health`, {
+        method: 'GET',
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      return res.ok;
+    } catch {
+      return false;
+    }
+  },
+
   // Auth
   login: (data: any) => request<any>('/auth/login', { method: 'POST', body: JSON.stringify(data) }),
   register: (data: any) => request<any>('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
