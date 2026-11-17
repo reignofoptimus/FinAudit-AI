@@ -262,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {showNotifications && (
               <div
-                className="absolute right-0 mt-2 w-72 sm:w-80 glass-card p-4 shadow-2xl z-50 border border-white/15 tab-enter"
+                className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-xs sm:max-w-none sm:w-80 glass-card p-4 shadow-2xl z-50 border border-white/15 tab-enter"
                 onMouseLeave={() => setShowNotifications(false)}
               >
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">

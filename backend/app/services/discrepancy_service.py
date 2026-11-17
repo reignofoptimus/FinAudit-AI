@@ -37,11 +37,11 @@ def run_discrepancy_analysis(db: Session, company_id: int) -> Dict[str, Any]:
                 transaction_id=t_prim.id,
                 related_document_id=t_match.document_id,
                 discrepancy_type="amount_mismatch",
-                expected_value=f"${t_match.amount:,.2f} (Ledger)",
-                actual_value=f"${t_prim.amount:,.2f} (Invoice)",
+                expected_value=f"₹{t_match.amount:,.2f} (Ledger)",
+                actual_value=f"₹{t_prim.amount:,.2f} (Invoice)",
                 difference_amount=m.amount_difference,
                 risk_level=risk,
-                explanation=f"Variance of ${m.amount_difference:,.2f} between source document and general ledger entry for vendor '{t_prim.vendor_name}'. Expected ${t_match.amount:,.2f}, billed as ${t_prim.amount:,.2f}.",
+                explanation=f"Variance of ₹{m.amount_difference:,.2f} between source document and general ledger entry for vendor '{t_prim.vendor_name}'. Expected ₹{t_match.amount:,.2f}, billed as ₹{t_prim.amount:,.2f}.",
                 status="unresolved"
             )
             db.add(disc)
@@ -83,11 +83,11 @@ def run_discrepancy_analysis(db: Session, company_id: int) -> Dict[str, Any]:
                     transaction_id=inv.id,
                     related_document_id=inv.document_id,
                     discrepancy_type="tax_calculation_error",
-                    expected_value=f"${expected_tax:,.2f} (Standard 8% Tax)",
-                    actual_value=f"${actual_tax:,.2f} (Recorded Tax)",
+                    expected_value=f"₹{expected_tax:,.2f} (Standard 8% Tax)",
+                    actual_value=f"₹{actual_tax:,.2f} (Recorded Tax)",
                     difference_amount=tax_diff,
                     risk_level=risk,
-                    explanation=f"Recorded sales/VAT tax of ${actual_tax:,.2f} deviates significantly from statutory tax rate on total amount of ${inv.amount:,.2f}.",
+                    explanation=f"Recorded sales/VAT tax of ₹{actual_tax:,.2f} deviates significantly from statutory tax rate on total amount of ₹{inv.amount:,.2f}.",
                     status="unresolved"
                 )
                 db.add(disc)

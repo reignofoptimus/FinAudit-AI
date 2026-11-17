@@ -17,7 +17,7 @@ class Transaction(Base):
     transaction_date = Column(DateTime, nullable=False, index=True)
     amount = Column(Float, nullable=False, index=True)
     tax_amount = Column(Float, default=0.0)
-    currency = Column(String(10), default="USD")
+    currency = Column(String(10), default="INR")
     
     vendor_name = Column(String(255), nullable=True, index=True)
     invoice_number = Column(String(100), nullable=True, index=True)

@@ -624,7 +624,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 key={`${item.type}-${item.id}`}
                 className="glass-soft p-3.5 sm:p-4 rounded-2xl border border-white/10 hover:border-[#FFC900]/40 transition-all space-y-2 group"
               >
-                {/* Item Top Row: Risk Pill + Title (left) & Dollar Amount (right) */}
+                {/* Item Top Row: Risk Pill + Title (left) & Rupee Amount (right) */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5 flex-wrap">
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider bg-white/15 text-[#F5F3EF] border border-white/20">

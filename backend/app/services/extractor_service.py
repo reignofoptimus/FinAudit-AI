@@ -100,10 +100,10 @@ def extract_pdf_data(file_path: str) -> List[Dict[str, Any]]:
     due_date = parse_date(due_match.group(1)) if due_match else None
 
     # Amounts
-    total_match = re.search(r"(?:Total(?:\s*Amount)?|Balance Due|Amount Due|Total Due|Grand Total):?\s*\$?([0-9,]+\.[0-9]{2})", extracted_text, re.IGNORECASE)
+    total_match = re.search(r"(?:Total(?:\s*Amount)?|Balance Due|Amount Due|Total Due|Grand Total):?\s*(?:[\$₹]|Rs\.?)?\s*([0-9,]+\.[0-9]{2})", extracted_text, re.IGNORECASE)
     total_amount = clean_amount(total_match.group(1)) if total_match else 0.0
     
-    tax_match = re.search(r"(?:Tax|VAT|GST|Sales Tax):?\s*\$?([0-9,]+\.[0-9]{2})", extracted_text, re.IGNORECASE)
+    tax_match = re.search(r"(?:Tax|VAT|GST|Sales Tax):?\s*(?:[\$₹]|Rs\.?)?\s*([0-9,]+\.[0-9]{2})", extracted_text, re.IGNORECASE)
     tax_amount = clean_amount(tax_match.group(1)) if tax_match else round(total_amount * 0.08, 2)
     
     subtotal = round(total_amount - tax_amount, 2) if total_amount > 0 else 0.0
@@ -127,7 +127,7 @@ def extract_pdf_data(file_path: str) -> List[Dict[str, Any]]:
         "total_amount": total_amount,
         "tax_amount": tax_amount,
         "subtotal_amount": subtotal,
-        "currency": "USD",
+        "currency": "INR",
         "payment_status": "paid",
         "payment_method": payment_method[:50],
         "account_details": account_details[:100],
@@ -205,7 +205,7 @@ def extract_tabular_data(file_path: str, file_ext: str, category: str = "general
             "total_amount": abs(amount),
             "tax_amount": tax,
             "subtotal_amount": round(abs(amount) - tax, 2),
-            "currency": "USD",
+            "currency": "INR",
             "payment_status": "paid" if status in ["paid", "cleared", "posted"] else status,
             "payment_method": "ACH / Wire",
             "account_details": "General Operating Account",

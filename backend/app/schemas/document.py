@@ -15,7 +15,7 @@ class ExtractedRecordOut(BaseModel):
     total_amount: float
     tax_amount: Optional[float] = 0.0
     subtotal_amount: Optional[float] = 0.0
-    currency: str = "USD"
+    currency: str = "INR"
     payment_status: Optional[str] = "paid"
     payment_method: Optional[str] = None
     account_details: Optional[str] = None

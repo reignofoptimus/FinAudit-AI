@@ -19,7 +19,7 @@ class ExtractedRecord(Base):
     total_amount = Column(Float, nullable=False, default=0.0)
     tax_amount = Column(Float, nullable=True, default=0.0)
     subtotal_amount = Column(Float, nullable=True, default=0.0)
-    currency = Column(String(10), default="USD")
+    currency = Column(String(10), default="INR")
     
     payment_status = Column(String(50), default="paid")  # 'paid', 'pending', 'overdue'
     payment_method = Column(String(50), nullable=True)  # 'ACH', 'Wire', 'Credit Card', 'Check'

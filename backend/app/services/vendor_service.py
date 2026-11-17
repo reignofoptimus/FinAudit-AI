@@ -54,7 +54,7 @@ def update_vendor_analytics(db: Session, company_id: int) -> None:
 
         if total_spend > 50000.0:
             risk_score += 10.0
-            reasons.append("High-volume material vendor (total spend > $50,000)")
+            reasons.append("High-volume material vendor (total spend > ₹50,000)")
 
         risk_score = min(98.0, risk_score)
         

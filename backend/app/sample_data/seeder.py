@@ -39,7 +39,7 @@ def seed_database():
             name="Acme Global Enterprise",
             registration_number="US-DEL-984210",
             industry="Enterprise Technology & Logistics",
-            currency="USD",
+            currency="INR",
             fiscal_year_end="December 31"
         )
         if not existing_company:
@@ -300,7 +300,7 @@ def seed_database():
         transactions_to_add.extend([dup_bank1, dup_bank2])
 
         # 3. Deliberate Amount Mismatches (Ledger differs from Invoice)
-        # Case A: Nexa Tech Hardware Invoice billed $34,800 but Ledger recorded $31,500 ($3,300 variance)
+        # Case A: Nexa Tech Hardware Invoice billed ₹34,800 but Ledger recorded ₹31,500 (₹3,300 variance)
         inv_counter += 1
         ref_counter += 1
         disc_inv1 = Transaction(
@@ -331,7 +331,7 @@ def seed_database():
         )
         transactions_to_add.extend([disc_inv1, disc_led1])
 
-        # Case B: Vertex Solutions Consulting Invoice $22,450 vs Ledger $22,045 (Typo transposition)
+        # Case B: Vertex Solutions Consulting Invoice ₹22,450 vs Ledger ₹22,045 (Typo transposition)
         inv_counter += 1
         ref_counter += 1
         disc_inv2 = Transaction(
@@ -357,13 +357,13 @@ def seed_database():
             vendor_name="Vertex Solutions Group",
             invoice_number=f"INV-VS-{inv_counter}",
             reference_no=f"TXN-{ref_counter}",
-            description="GL Posting: Strategic assessment ($405 digit swap error)",
+            description="GL Posting: Strategic assessment (₹405 digit swap error)",
             match_status="discrepancy"
         )
         transactions_to_add.extend([disc_inv2, disc_led2])
 
         # 4. Deliberate Tax Calculation Discrepancy
-        # An invoice with erroneous tax calculation ($5,200 on an $18,000 order = 28.8% tax)
+        # An invoice with erroneous tax calculation (₹5,200 on an ₹18,000 order = 28.8% tax)
         inv_counter += 1
         ref_counter += 1
         tax_error_inv = Transaction(
@@ -407,7 +407,7 @@ def seed_database():
             transactions_to_add.append(missing_tx)
 
         # 6. Deliberate Machine Learning Anomalies (Outliers)
-        # Outlier A: Huge Sunday transaction to Horizon Marketing ($98,500.00 - normally ~$12k)
+        # Outlier A: Huge Sunday transaction to Horizon Marketing (₹98,500.00 - normally ~₹12k)
         ref_counter += 1
         sunday_date = datetime(2024, 9, 15) # Sunday
         anom_tx1 = Transaction(
@@ -424,7 +424,7 @@ def seed_database():
         )
         transactions_to_add.append(anom_tx1)
 
-        # Outlier B: Extreme spike for Apex Office Supplies ($48,200.00 - normally ~$2k)
+        # Outlier B: Extreme spike for Apex Office Supplies (₹48,200.00 - normally ~₹2k)
         ref_counter += 1
         anom_tx2 = Transaction(
             company_id=company.id,

@@ -13,7 +13,7 @@ class TransactionOut(BaseModel):
     transaction_date: datetime
     amount: float
     tax_amount: Optional[float] = 0.0
-    currency: str = "USD"
+    currency: str = "INR"
     vendor_name: Optional[str] = None
     invoice_number: Optional[str] = None
     reference_no: Optional[str] = None

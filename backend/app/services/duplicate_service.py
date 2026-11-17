@@ -51,7 +51,7 @@ def run_duplicate_detection(db: Session, company_id: int) -> Dict[str, Any]:
                 is_duplicate = True
                 dup_type = "exact_invoice_duplicate"
                 confidence = 0.98
-                reason = f"Duplicate invoice number '{t1.invoice_number}' billed twice (${t1.amount:,.2f} and ${t2.amount:,.2f}) by vendor '{t1.vendor_name}'"
+                reason = f"Duplicate invoice number '{t1.invoice_number}' billed twice (₹{t1.amount:,.2f} and ₹{t2.amount:,.2f}) by vendor '{t1.vendor_name}'"
 
             # 2. Identical Amount and exact/fuzzy vendor within 30 days on payments
             elif abs(t1.amount - t2.amount) == 0.0:
@@ -62,7 +62,7 @@ def run_duplicate_detection(db: Session, company_id: int) -> Dict[str, Any]:
                     is_duplicate = True
                     dup_type = "identical_payment_pattern"
                     confidence = 0.92 if days_diff <= 7 else 0.82
-                    reason = f"Potential double-payment of ${t1.amount:,.2f} to '{t1.vendor_name}' within {days_diff} days (dates: {t1.transaction_date.strftime('%Y-%m-%d')} & {t2.transaction_date.strftime('%Y-%m-%d')})"
+                    reason = f"Potential double-payment of ₹{t1.amount:,.2f} to '{t1.vendor_name}' within {days_diff} days (dates: {t1.transaction_date.strftime('%Y-%m-%d')} & {t2.transaction_date.strftime('%Y-%m-%d')})"
 
             # 3. Exact Transaction ID match
             elif (
@@ -73,7 +73,7 @@ def run_duplicate_detection(db: Session, company_id: int) -> Dict[str, Any]:
                 is_duplicate = True
                 dup_type = "duplicate_reference_id"
                 confidence = 0.95
-                reason = f"Identical transaction reference '{t1.reference_no}' found in multiple records for ${t1.amount:,.2f}"
+                reason = f"Identical transaction reference '{t1.reference_no}' found in multiple records for ₹{t1.amount:,.2f}"
 
             if is_duplicate:
                 group_uuid = f"DUP-{uuid.uuid4().hex[:8].upper()}"

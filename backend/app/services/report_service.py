@@ -127,7 +127,7 @@ def generate_pdf_report(
     metrics_data = [
         [
             Paragraph("<b>Total Transactions:</b>", body_style), Paragraph(f"{stats.get('total_transactions', 0):,}", body_style),
-            Paragraph("<b>Total Expenditure:</b>", body_style), Paragraph(f"${stats.get('total_spend', 0.0):,.2f}", body_style),
+            Paragraph("<b>Total Expenditure:</b>", body_style), Paragraph(f"₹{stats.get('total_spend', 0.0):,.2f}", body_style),
         ],
         [
             Paragraph("<b>Documents Analyzed:</b>", body_style), Paragraph(f"{stats.get('total_documents', 0)}", body_style),
@@ -183,7 +183,7 @@ def generate_pdf_report(
                 Paragraph(str(d.get("discrepancy_type")).replace("_", " ").title(), table_cell_style),
                 Paragraph(str(d.get("expected_value")), table_cell_style),
                 Paragraph(str(d.get("actual_value")), table_cell_style),
-                Paragraph(f"${d.get('difference_amount', 0.0):,.2f}", table_cell_style),
+                Paragraph(f"₹{d.get('difference_amount', 0.0):,.2f}", table_cell_style),
                 Paragraph(f"<font color='{risk_color}'><b>{str(d.get('risk_level')).upper()}</b></font>", table_cell_style),
             ])
         disc_tbl = Table(disc_rows, colWidths=[45, 120, 105, 105, 80, 85])
@@ -212,7 +212,7 @@ def generate_pdf_report(
             anom_rows.append([
                 Paragraph(f"#{a.get('transaction_id')}", table_cell_style),
                 Paragraph(tx.get("vendor_name", "N/A")[:20], table_cell_style),
-                Paragraph(f"${tx.get('amount', 0.0):,.2f}", table_cell_style),
+                Paragraph(f"₹{tx.get('amount', 0.0):,.2f}", table_cell_style),
                 Paragraph(f"<b>{a.get('anomaly_score', 0):.1f}</b>", table_cell_style),
                 Paragraph(str(a.get("anomaly_factors", ""))[:140], table_cell_style),
             ])

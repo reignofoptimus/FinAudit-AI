@@ -59,7 +59,7 @@ def generate_audit_executive_summary(stats: Dict[str, Any]) -> str:
     )
     prompt = (
         f"Write a formal 3-paragraph executive audit observation based on these audit statistics:\n"
-        f"- Analyzed Transactions: {total_tx} totalling ${total_spend:,.2f}\n"
+        f"- Analyzed Transactions: {total_tx} totalling ₹{total_spend:,.2f}\n"
         f"- Document/Ledger Discrepancies: {discrepancies}\n"
         f"- Potential Duplicate Payments: {duplicates}\n"
         f"- Missing Supporting Documents: {missing}\n"
@@ -76,7 +76,7 @@ def generate_audit_executive_summary(stats: Dict[str, Any]) -> str:
     risk_adjective = "elevated" if high_risk > 3 else "moderate" if (discrepancies + duplicates) > 3 else "satisfactory"
     return (
         f"EXECUTIVE AUDIT SUMMARY:\n\n"
-        f"An automated examination was executed on {total_tx:,} financial records with a cumulative transaction volume of ${total_spend:,.2f}. "
+        f"An automated examination was executed on {total_tx:,} financial records with a cumulative transaction volume of ₹{total_spend:,.2f}. "
         f"The algorithmic analysis identified {discrepancies} ledger/billing discrepancies, {duplicates} potential duplicate payment groups, "
         f"{missing} transactions lacking mandatory primary supporting documentation, and {anomalies} statistical outliers detected by the Isolation Forest model. "
         f"Overall risk exposure is assessed as {risk_adjective.upper()} with {high_risk} critical findings requiring direct auditor intervention.\n\n"
@@ -85,7 +85,7 @@ def generate_audit_executive_summary(stats: Dict[str, Any]) -> str:
         f"compounded by unattached vendor vouchers in high-value disbursements. Vendors exhibiting repetitive duplicate billing patterns present direct cash-leakage exposure.\n\n"
         f"AUDITOR RECOMMENDATION:\n"
         f"1. Freeze payment approvals on flagged duplicate vouchers pending vendor credit notes.\n"
-        f"2. Enforce mandatory invoice attachment rules before journal clearance for transactions exceeding $5,000.\n"
+        f"2. Enforce mandatory invoice attachment rules before journal clearance for transactions exceeding ₹5,000.\n"
         f"3. Reconcile tax calculation variances against statutory state/federal schedules before fiscal close."
     )
 

@@ -95,7 +95,7 @@ async def upload_documents(
                     total_amount=r.get("total_amount", 0.0),
                     tax_amount=r.get("tax_amount", 0.0),
                     subtotal_amount=r.get("subtotal_amount", 0.0),
-                    currency=r.get("currency", "USD"),
+                    currency=r.get("currency", "INR"),
                     payment_status=r.get("payment_status", "paid"),
                     payment_method=r.get("payment_method"),
                     account_details=r.get("account_details"),

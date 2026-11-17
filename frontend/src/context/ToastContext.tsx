@@ -35,12 +35,12 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
       {/* Toast Render Container */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full font-sans">
+      <div className="fixed top-4 inset-x-4 sm:top-auto sm:inset-x-auto sm:bottom-6 sm:right-6 sm:max-w-sm z-50 flex flex-col space-y-2 pointer-events-none font-sans">
         {toasts.map((toast) => {
           return (
             <div
               key={toast.id}
-              className="pointer-events-auto flex items-start space-x-3 p-4 rounded-2xl glass-card shadow-2xl transition-all animate-in slide-in-from-bottom-3 border border-white/15"
+              className="pointer-events-auto flex items-start space-x-3 p-4 rounded-2xl glass-card shadow-2xl transition-all animate-in slide-in-from-top-3 sm:slide-in-from-bottom-3 border border-white/15 w-full"
             >
               {/* Golden Yellow Accent Dot */}
               <div className="w-6 h-6 rounded-full bg-[#FFC900] text-[#08090B] flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 shadow-md shadow-[#FFC900]/25">

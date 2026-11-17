@@ -10,7 +10,7 @@ class Company(Base):
     name = Column(String(255), nullable=False)
     registration_number = Column(String(100), nullable=True)
     industry = Column(String(100), default="Technology & Services")
-    currency = Column(String(10), default="USD")
+    currency = Column(String(10), default="INR")
     fiscal_year_end = Column(String(20), default="December 31")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

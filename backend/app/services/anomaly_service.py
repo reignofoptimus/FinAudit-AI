@@ -106,9 +106,9 @@ def run_ml_anomaly_detection(db: Session, company_id: int) -> Dict[str, Any]:
             # Formulate explainable reasons
             reasons = []
             if row["amount"] > 35000:
-                reasons.append(f"High absolute amount: ${row['amount']:,.2f}")
+                reasons.append(f"High absolute amount: ₹{row['amount']:,.2f}")
             if row["v_zscore"] >= 2.0:
-                reasons.append(f"Amount is {row['v_zscore']:.1f} standard deviations above vendor '{row['vendor']}' average (${row['v_mean']:,.2f})")
+                reasons.append(f"Amount is {row['v_zscore']:.1f} standard deviations above vendor '{row['vendor']}' average (₹{row['v_mean']:,.2f})")
             if row["is_weekend"] == 1:
                 day_name = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][int(row["day_of_week"])]
                 reasons.append(f"Transaction occurred outside normal business days on {day_name}")

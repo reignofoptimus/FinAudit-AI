@@ -76,7 +76,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             if inv_no_match and amt_exact and date_close:
                 score = 0.99
                 mtype = "exact"
-                reason = f"Exact invoice #{inv.invoice_number} and identical amount ${inv.amount:,.2f}"
+                reason = f"Exact invoice #{inv.invoice_number} and identical amount ₹{inv.amount:,.2f}"
                 best_match = led
                 best_score = score
                 best_type = mtype
@@ -89,7 +89,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             elif vendor_sim >= 0.85 and amt_exact and date_close:
                 score = 0.92
                 mtype = "fuzzy"
-                reason = f"Vendor match ({vendor_sim*100:.0f}%), identical amount ${inv.amount:,.2f}"
+                reason = f"Vendor match ({vendor_sim*100:.0f}%), identical amount ₹{inv.amount:,.2f}"
                 if score > best_score:
                     best_match = led
                     best_score = score
@@ -102,7 +102,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             elif (inv_no_match or vendor_sim >= 0.90) and not amt_exact and amt_diff < 5000.0 and date_close:
                 score = 0.75
                 mtype = "amount_mismatch"
-                reason = f"Invoice reference match but amount differs: Invoice ${inv.amount:,.2f} vs Ledger ${led.amount:,.2f} (Diff: ${amt_diff:,.2f})"
+                reason = f"Invoice reference match but amount differs: Invoice ₹{inv.amount:,.2f} vs Ledger ₹{led.amount:,.2f} (Diff: ₹{amt_diff:,.2f})"
                 if score > best_score:
                     best_match = led
                     best_score = score
@@ -115,7 +115,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             elif (inv_no_match or vendor_sim >= 0.90) and amt_exact and days_diff > 7 and days_diff <= 45:
                 score = 0.78
                 mtype = "date_mismatch"
-                reason = f"Amount ${inv.amount:,.2f} matched but date differs by {days_diff} days"
+                reason = f"Amount ₹{inv.amount:,.2f} matched but date differs by {days_diff} days"
                 if score > best_score:
                     best_match = led
                     best_score = score
@@ -168,7 +168,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             if (ref_match or vendor_sim >= 0.88) and amt_exact and days_diff <= 3:
                 score = 0.97
                 mtype = "exact"
-                reason = f"Bank statement record matches ledger for {btx.vendor_name} (${btx.amount:,.2f})"
+                reason = f"Bank statement record matches ledger for {btx.vendor_name} (₹{btx.amount:,.2f})"
                 best_match = led
                 best_score = score
                 best_type = mtype
@@ -179,7 +179,7 @@ def run_automated_matching(db: Session, company_id: int) -> Dict[str, Any]:
             elif vendor_sim >= 0.80 and amt_exact and days_diff <= 7:
                 score = 0.88
                 mtype = "fuzzy"
-                reason = f"Fuzzy bank match ({vendor_sim*100:.0f}%) with identical amount ${btx.amount:,.2f}"
+                reason = f"Fuzzy bank match ({vendor_sim*100:.0f}%) with identical amount ₹{btx.amount:,.2f}"
                 if score > best_score:
                     best_match = led
                     best_score = score

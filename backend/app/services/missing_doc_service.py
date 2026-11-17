@@ -39,7 +39,7 @@ def run_missing_document_scan(db: Session, company_id: int) -> Dict[str, Any]:
             alert = MissingDocumentAlert(
                 transaction_id=tx.id,
                 missing_document_type=req_type,
-                explanation=f"Transaction of ${tx.amount:,.2f} to '{tx.vendor_name}' on {tx.transaction_date.strftime('%Y-%m-%d')} has no supporting {req_type.replace('_', ' ')} uploaded or attached.",
+                explanation=f"Transaction of ₹{tx.amount:,.2f} to '{tx.vendor_name}' on {tx.transaction_date.strftime('%Y-%m-%d')} has no supporting {req_type.replace('_', ' ')} uploaded or attached.",
                 risk_level=risk,
                 is_resolved=False
             )

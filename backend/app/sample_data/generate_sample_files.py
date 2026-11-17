@@ -33,12 +33,12 @@ def generate_sample_pdf_invoice(dest_path: str):
     # Items
     items_data = [
         [Paragraph("Description", bold_style), Paragraph("Quantity", bold_style), Paragraph("Unit Price", bold_style), Paragraph("Amount", bold_style)],
-        [Paragraph("Enterprise Cloud Infrastructure - Q3 Tier 1 Hosting", normal_style), Paragraph("1", normal_style), Paragraph("$18,500.00", normal_style), Paragraph("$18,500.00", normal_style)],
-        [Paragraph("Dedicated VPC Peering & High-Availability Mesh", normal_style), Paragraph("1", normal_style), Paragraph("$4,200.00", normal_style), Paragraph("$4,200.00", normal_style)],
-        [Paragraph("24/7 Enterprise Tier SRE Support & Monitoring", normal_style), Paragraph("1", normal_style), Paragraph("$2,300.00", normal_style), Paragraph("$2,300.00", normal_style)],
-        [Paragraph("Subtotal", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("$25,000.00", bold_style)],
-        [Paragraph("Sales Tax (8%)", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("$2,000.00", bold_style)],
-        [Paragraph("Total Amount Due", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("$27,000.00", bold_style)]
+        [Paragraph("Enterprise Cloud Infrastructure - Q3 Tier 1 Hosting", normal_style), Paragraph("1", normal_style), Paragraph("₹18,500.00", normal_style), Paragraph("₹18,500.00", normal_style)],
+        [Paragraph("Dedicated VPC Peering & High-Availability Mesh", normal_style), Paragraph("1", normal_style), Paragraph("₹4,200.00", normal_style), Paragraph("₹4,200.00", normal_style)],
+        [Paragraph("24/7 Enterprise Tier SRE Support & Monitoring", normal_style), Paragraph("1", normal_style), Paragraph("₹2,300.00", normal_style), Paragraph("₹2,300.00", normal_style)],
+        [Paragraph("Subtotal", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("₹25,000.00", bold_style)],
+        [Paragraph("Sales Tax (8%)", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("₹2,000.00", bold_style)],
+        [Paragraph("Total Amount Due", bold_style), Paragraph("", normal_style), Paragraph("", normal_style), Paragraph("₹27,000.00", bold_style)]
     ]
     items_table = Table(items_data, colWidths=[280, 70, 95, 95])
     items_table.setStyle(TableStyle([
